@@ -128,14 +128,14 @@ public class CommandProcessor {
         boolean mcheck = movieHash.search(key[0]);
         boolean rcheck = reviewHash.search(key[1]);
         if (!mcheck) {
-            Handle mhandle = new Handle(10, 19, key[0].trim());
+            Handle mhandle = new Handle(10, 19, key[1].trim());
             mhandle.setRecord(name.trim());
-            movieHash.add(key[0].trim(), mhandle);
+            movieHash.add(key[1].trim(), mhandle);
         }
         if (!rcheck) {
-            Handle rhandle = new Handle(10, 19, key[1].trim());
+            Handle rhandle = new Handle(10, 19, key[0].trim());
             rhandle.setRecord(name.trim());
-            reviewHash.add(key[1].trim(), rhandle);
+            reviewHash.add(key[0].trim(), rhandle);
         }
         System.out.println("Rating added: |" + key[0] + "|, |" + key[1] + "|, "
             + key[2]);

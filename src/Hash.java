@@ -151,8 +151,7 @@ public class Hash {
         int sum = 0;
         for (int i = 0; i < hashtable.length; i++) {
             if (hashtable[i] != null && !hashtable[i].getDeleted()) {
-                String[] print = hashtable[i].getRecord().split("<SEP>");
-                System.out.println("Rating added: |" + print[0] + "|, |" + print[1] + "|, " + print[2]);
+                System.out.println("|" + hashtable[i].key() + "| " + i);
                 sum++;
             }
         }
