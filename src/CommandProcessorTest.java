@@ -14,6 +14,7 @@ public class CommandProcessorTest extends TestCase {
     public void testConstructor() {
         CommandProcessor processor = new CommandProcessor("32", "6",
             "P2sampleInput.txt");
-        assertEquals(8, 8);
+        assertNotNull(processor.getHash("movie"));
+        assertNotNull(processor.getHash("review"));
     }
 }

@@ -10,7 +10,7 @@ public class Handle {
     private String key;
     private boolean tombstone;
 
-   // private String record; // delete
+    private String record; // delete
 
 
     /**
@@ -75,24 +75,24 @@ public class Handle {
         return length;
     }
 
-//
-//    /**
-//     * DELETE
-//     * 
-//     * @return the record
-//     */
-//    public String getRecord() {
-//        return record;
-//    }
-//
-//
-//    /**
-//     * delete
-//     * 
-//     * @param record
-//     *            is record to set
-//     */
-//    public void setRecord(String record) {
-//        this.record = record;
-//    }
+
+    /**
+     * DELETE
+     * 
+     * @return the record
+     */
+    public String getRecord() {
+        return record;
+    }
+
+
+    /**
+     * delete
+     * 
+     * @param record
+     *            is record to set
+     */
+    public void setRecord(String record) {
+        this.record = record;
+    }
 }

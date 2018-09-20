@@ -66,22 +66,22 @@ public class CommandProcessor {
         if (inputs[0].equals("add")) {
             if (inputs[1].equals("reviewer")) {
                 commandString = commandString.replaceFirst("reviewer", "");
-                add(commandString, reviewHash);
+                add(commandString);
             }
             else {
                 commandString = commandString.replaceFirst("movie", "");
-                add(commandString, movieHash);
+                add(commandString);
             }
             return true;
         }
         if (inputs[0].equals("delete")) {
             if (inputs[1].equals("reviewer")) {
                 commandString = commandString.replaceFirst("reviewer", "");
-                delete(commandString, reviewHash);
+                delete(commandString, reviewHash, "Reviewer");
             }
             else {
                 commandString = commandString.replaceFirst("movie", "");
-                delete(commandString, movieHash);
+                delete(commandString, movieHash, "Movie");
             }
             return true;
         }
@@ -100,8 +100,18 @@ public class CommandProcessor {
      *            print command string
      */
     private void print(String printCommand) {
-        reviewHash.print();
-        movieHash.print();
+        String[] inputs = printCommand.trim().split("\\s+");
+        if (inputs[1].equals("ratings")) {
+            System.out.println("There are no ratings in the database");
+        }
+        else if (inputs[2].equals("reviewer")) {
+            System.out.println("Reviewers:");
+            reviewHash.print();
+        }
+        else if (inputs[2].equals("movie")) {
+            System.out.println("Movies:");
+            movieHash.print();
+        }
     }
 
 
@@ -111,20 +121,24 @@ public class CommandProcessor {
      * @param addCommand
      *            add command string
      */
-    private void add(String addCommand, Hash hash) {
+    private void add(String addCommand) {
         String name = addCommand.replaceFirst("add", "");
         name = formatString(name);
-        boolean check = hash.search(name.trim());
-        if (!check) {
-            Handle handle = new Handle(10, 19, name);
-            hash.add(name, handle);
-            System.out.println("|" + name
-                + "| has been added to the Name database.");
+        String[] key = name.split("<SEP>");
+        boolean mcheck = movieHash.search(key[0]);
+        boolean rcheck = reviewHash.search(key[1]);
+        if (!mcheck) {
+            Handle mhandle = new Handle(10, 19, key[0].trim());
+            mhandle.setRecord(name.trim());
+            movieHash.add(key[0].trim(), mhandle);
         }
-        else {
-            System.out.println("|" + name
-                + "| duplicates a record already in the Name database.");
+        if (!rcheck) {
+            Handle rhandle = new Handle(10, 19, key[1].trim());
+            rhandle.setRecord(name.trim());
+            reviewHash.add(key[1].trim(), rhandle);
         }
+        System.out.println("Rating added: |" + key[0] + "|, |" + key[1] + "|, "
+            + key[2]);
     }
 
 
@@ -134,18 +148,19 @@ public class CommandProcessor {
      * @param deleteCommand
      *            delete command string
      */
-    private void delete(String deleteCommand, Hash hash) {
+    private void delete(String deleteCommand, Hash hash, String str) {
         String name;
         name = deleteCommand.replaceFirst("delete", "");
         name = formatString(name);
-        boolean check = hash.remove(name);
+        String[] key = name.split("<SEP>");
+        boolean check = hash.remove(key[0]);
         if (check) {
-            System.out.println("|" + name
-                + "| has been deleted from the Name database.");
+            System.out.println("|" + key[0] + "| has been deleted from the "
+                + str + " database.");
         }
         else {
-            System.out.println("|" + name + "| not deleted because it does"
-                + " not exist in the Name database.");
+            System.out.println("|" + key[0] + "| not deleted because it does"
+                + " not exist in the " + str + " database.");
         }
     }
 
