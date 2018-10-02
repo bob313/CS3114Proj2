@@ -1,11 +1,11 @@
 
-public class Matrix {
+public class SparseMatrix {
 
     private LinkedList<String> movieList;
     private LinkedList<String> reviewList;
     
 
-    public Matrix() {
+    public SparseMatrix() {
         
     }
     
@@ -22,42 +22,124 @@ public class Matrix {
         if (!movieList.contains(key[1])) {
             movieList.add(key[1]);
         }
-        Node<String> row = reviewList.getObject(key[0]);
-        Node<String> col = movieList.getObject(key[1]);
-        InnerNode<String> rInner = row.getInnerNode();
-        InnerNode<String> cInner = col.getInnerNode();
-        InnerNode<String> inner = findIntersect(key[2], col);
-        // tests for when inner node already exists
-        if (inner != null) {
-            inner.setData(key[2]);
+        int reviewIndex = reviewList.getIndex(key[0]);
+        InnerNode<String> reviewInner = reviewList.getObject(key[0]).getInnerNode();
+        int movieIndex = movieList.getIndex(key[1]);
+        InnerNode<String> movieInner = movieList.getObject(key[1]).getInnerNode();
+        //empty matrix case
+        if (reviewInner == null && movieInner == null) {
+            InnerNode<String> inner = new InnerNode<String>(key[2]);
+            reviewList.getObject(key[0]).setInnerNode(inner);
+            movieList.getObject(key[1]).setInnerNode(inner);
+            return;
         }
-        else {
-            inner = new InnerNode<String>(key[2]);
-            // if for the first row
-            if (reviewList.get(0).equals(key[0])) {
-                if (movieList.get(0).equals(key[1])) {
-                    inner.setRight(row.getInnerNode());
-                    inner.setBottom(col.getInnerNode());
-                    row.setInnerNode(inner);
-                    col.setInnerNode(inner);
-                }
-                else if (cInner == null) {
-
+        //replica case
+        boolean replica = checkForReplica(reviewInner, movieInner, key[2]);
+        //sets up a linked list containing indices for a review row
+        InnerNode<String> currNodeReview = reviewInner;
+        LinkedList<AddListElement> reviewRowIndexes = new LinkedList<>();
+        while (!replica && currNodeReview != null) {
+            for (int i = 0; i < movieList.size(); i++) {
+                if (columnContains(currNodeReview, movieList.getObject(movieList.get(i)).getInnerNode())) {
+                    reviewRowIndexes.add(new AddListElement(i, currNodeReview));
                 }
             }
-            // if for the first column
-            else if (movieList.get(0).equals(key[1])) {
-
-            }
-            // else just add the inner node in the matrix
-            else {
-
+            currNodeReview = currNodeReview.right();
+        }
+        InnerNode<String> inner = new InnerNode<String>(key[2]); //new node
+        //adding new node to correct column
+        if (reviewRowIndexes.isEmpty()) {
+            reviewList.getObject(key[0]).setInnerNode(inner);
+        }
+        for (int i = 0; i < reviewRowIndexes.size(); i++) {
+            if (reviewRowIndexes.get(i).index > movieIndex) {
+                reviewRowIndexes.get(i).innerNode.setLeft(inner);
+                inner.setRight(reviewRowIndexes.get(i).innerNode);
+                reviewRowIndexes.get(i-1).innerNode.setRight(inner);
+                inner.setLeft(reviewRowIndexes.get(i-1).innerNode);
             }
         }
-
+      //sets up a linked list containing indices for a movie column
+        InnerNode<String> currNodeMovie = movieInner;
+        LinkedList<AddListElement> movieColumnIndexes = new LinkedList<>();
+        while (!replica && currNodeMovie != null) {
+            for (int i = 0; i < movieList.size(); i++) {
+                if (rowContains(currNodeMovie, reviewList.getObject(reviewList.get(i)).getInnerNode())) {
+                    movieColumnIndexes.add(new AddListElement(i, currNodeMovie));
+                }
+            }
+            currNodeMovie = currNodeMovie.bottom();
+        }
+        //adding new node to correct row
+        if (movieColumnIndexes.isEmpty()) {
+            movieList.getObject(key[1]).setInnerNode(inner);
+        }
+        for (int i = 0; i < movieColumnIndexes.size(); i++) {
+            if (movieColumnIndexes.get(i).index > reviewIndex) {
+                movieColumnIndexes.get(i).innerNode.setTop(inner);
+                inner.setBottom(reviewRowIndexes.get(i).innerNode);
+                reviewRowIndexes.get(i-1).innerNode.setBottom(inner);
+                inner.setTop(reviewRowIndexes.get(i-1).innerNode);
+            }
+        }
     }
 
+    /**
+     * Checks if an inner node is contained in an inner node column
+     * @param reviewNode the inner node to check for
+     * @param movieNodeStart the start of the column to check
+     * @return true if its in the column, false otherwise
+     */
+    public boolean columnContains(InnerNode<String> reviewNode, InnerNode<String> movieNodeStart) {
+        InnerNode<String> curr = movieNodeStart;
+        while(curr != null) {
+            if (curr.equals(reviewNode)) {
+                return true;
+            }
+            curr = curr.bottom();
+        }
+        return false;
+    }
+    
+    /**
+     * Checks if an inner node is contained in an inner node row
+     * @param reviewNode the inner node to check for
+     * @param movieNodeStart the start of the row to check
+     * @return true if its in the column, false otherwise
+     */
+    public boolean rowContains(InnerNode<String> movieNode, InnerNode<String> reviewNodeStart) {
+        InnerNode<String> curr = reviewNodeStart;
+        while(curr != null) {
+            if (curr.equals(movieNode)) {
+                return true;
+            }
+            curr = curr.right();
+        }
+        return false;
+    }
 
+    /**
+     * Checks if a node already exists in the matrix then updates the score.
+     * @param review the first inner node of the review row
+     * @param movie the first inner node of the movie column
+     * @param score the new score
+     * @return true if one existed, false if it did not.
+     */
+   private boolean checkForReplica(InnerNode<String> review, InnerNode<String> movie, String score) {
+       InnerNode<String> curr = review;
+       while (curr != null) {
+           InnerNode<String >curr1 = movie;
+           while (curr1 != null) {
+               if (curr.equals(curr1)) {
+                   curr.setData(score);
+                   return true;
+               }
+               curr1 = curr1.bottom();
+           }
+           curr = curr.right();
+       }
+       return false;
+   }
     /**
      * finds the inner node if it exists
      * 
