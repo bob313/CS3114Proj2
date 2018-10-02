@@ -13,73 +13,6 @@
 @SuppressWarnings("unused")
 public class LinkedList<E> implements LList<E> {
 
-    /**
-     * This represents a node in a singly linked list. This node stores data
-     * along with having a pointer to the next node in the list
-     * 
-     * @author bob bao bob313 Christian Carminucci cdc97
-     *
-     * @param <D> data type
-     */
-    public static class Node<D> {
-
-        // The data element stored in the node.
-        private D data;
-
-        // The next node in the sequence.
-        private Node<D> next;
-        
-        private InnerNode<D> innerNext;
-
-        /**
-         * Creates a new node with the given data
-         *
-         * @param d
-         *            the data to put inside the node
-         */
-        public Node(D d) {
-            data = d;
-        }
-
-
-        /**
-         * Sets the node after this node
-         *
-         * @param n
-         *            the node after this one
-         */
-        public void setNext(Node<D> n) {
-            next = n;
-        }
-
-
-        /**
-         * Gets the next node
-         *
-         * @return the next node
-         */
-        public Node<D> next() {
-            return next;
-        }
-        
-        /**
-         * Sets the inner nodes
-         * @param inner
-         */
-        public void setInnerNode(InnerNode<D> inner) {
-            innerNext = inner;
-        }
-
-        /**
-         * Gets the data in the node
-         *
-         * @return the data in the node
-         */
-        public D getData() {
-            return data;
-        }
-    }
-
     private Node<E> head;
 
     // the size of the linked list
@@ -149,7 +82,7 @@ public class LinkedList<E> implements LList<E> {
             while (currentIndex <= index) {
                 // while(currentIndex != index) {
                 if (currentIndex == index - 1) {
-                    Node<E> nextNext = current.next;
+                    Node<E> nextNext = current.next();
                     Node<E> newNode = new Node<E>(obj);
                     current.setNext(newNode);
                     newNode.setNext(nextNext);
@@ -187,8 +120,8 @@ public class LinkedList<E> implements LList<E> {
 
         // other cases
         else {
-            while (current.next != null) {
-                current = current.next;
+            while (current.next() != null) {
+                current = current.next();
             }
             current.setNext(new Node<E>(obj));
         }
@@ -219,24 +152,24 @@ public class LinkedList<E> implements LList<E> {
         Node<E> current = head;
 
         // account for matching head
-        if (!isEmpty() && (obj.equals(current.data))) {
-            head = head.next;
+        if (!isEmpty() && (obj.equals(current.getData()))) {
+            head = head.next();
             return true;
         }
 
         // account for 2+ size
         if (!isEmpty()) {
-            while (current.next != null) {
-                if ((obj.equals(current.next.data))) {
-                    if (current.next.next != null) {
-                        current.setNext(current.next.next);
+            while (current.next() != null) {
+                if ((obj.equals(current.next().getData()))) {
+                    if (current.next().next() != null) {
+                        current.setNext(current.next().next());
                     }
                     else {
-                        current.next = null;
+                        current.setNext(null);
                     }
                     return true;
                 }
-                current = current.next;
+                current = current.next();
             }
         }
         // this accounts for the isEmpty case or the object does not exist
@@ -262,16 +195,16 @@ public class LinkedList<E> implements LList<E> {
         int currentIndex = 0;
         E data = null;
         if (index == 0) {
-            return head.data;
+            return head.getData();
         }
         while (currentIndex != index) {
-            current = current.next;
+            current = current.next();
             if (current == null) {
                 throw new IndexOutOfBoundsException("Index exceeds the size.");
             }
             currentIndex++;
             if (currentIndex == index) {
-                data = current.data;
+                data = current.getData();
             }
         }
 
@@ -290,16 +223,16 @@ public class LinkedList<E> implements LList<E> {
      *             Object is the string to search for in the list
      * @return
      */
-    public InnerNode<E> getObject(E obj){
+    public Node<E> getObject(E obj){
         Node<E> current = head;
         if (head == null) {
             return null;
         }
         while (current != null) {
             if (current.getData().equals(obj)) {
-                return current.innerNext;
+                return current;
             }
-            current = current.next;
+            current = current.next();
         }
         return null;
     }
@@ -316,10 +249,10 @@ public class LinkedList<E> implements LList<E> {
     public boolean contains(E obj) {
         Node<E> current = head;
         while (current != null) {
-            if (obj.equals(current.data)) {
+            if (obj.equals(current.getData())) {
                 return true;
             }
-            current = current.next;
+            current = current.next();
         }
 
         return false;
@@ -339,11 +272,11 @@ public class LinkedList<E> implements LList<E> {
         Node<E> current = head;
         int currentIndex = 0;
         while (current != null) {
-            if (obj.equals(current.data)) {
+            if (obj.equals(current.getData())) {
                 lastIndex = currentIndex;
             }
             currentIndex++;
-            current = current.next;
+            current = current.next();
 
         }
         return lastIndex;
@@ -362,8 +295,8 @@ public class LinkedList<E> implements LList<E> {
 
         Node<E> current = head;
         while (current != null) {
-            result += "" + current.data;
-            current = current.next;
+            result += "" + current.getData();
+            current = current.next();
             if (current != null) {
                 result += ", ";
             }
@@ -388,7 +321,7 @@ public class LinkedList<E> implements LList<E> {
         int count = 0;
         while (current != null) {
             array[count] = current.getData();
-            current = current.next;
+            current = current.next();
             count++;
         }
         return array;

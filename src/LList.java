@@ -136,7 +136,7 @@ public interface LList<E>
      *             Object is the string to search for in the list
      * @return
      */
-    public abstract InnerNode<E> getObject(E obj);
+    public abstract Node<E> getObject(E obj);
 
 
     /**

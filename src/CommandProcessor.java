@@ -225,7 +225,8 @@ public class CommandProcessor {
             reviewList.add(key[0]);
         }
         else {
-            InnerNode<String> inner = reviewList.getObject(key[0]);
+            Node<String> row = reviewList.getObject(key[0]);
+            InnerNode<String> inner = row.getInnerNode();
             if (inner == null) {
                 
             }
@@ -234,7 +235,8 @@ public class CommandProcessor {
             movieList.add(key[1]);
         }
         else {
-            InnerNode<String> inner = movieList.getObject(key[1]);
+            Node<String> col = movieList.getObject(key[1]);
+            InnerNode<String> inner = col.getInnerNode();
             if (inner == null) {
                 
             }
