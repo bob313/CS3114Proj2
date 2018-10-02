@@ -43,6 +43,13 @@ public class Hash {
         return hashtable;
     }
 
+    /**
+     * 
+     * @return the count
+     */
+    public int getCount() {
+        return count;
+    }
 
     /**
      * Insert e into hash table HT
@@ -61,20 +68,25 @@ public class Hash {
             temp = hashtable;
             hashtable = new Handle[hashtable.length * 2];
             this.count = 0;
-            System.out.println("Name hash table size doubled to "
-                + hashtable.length + " slots.");
             this.remake(temp, hashtable);
             pos = h(k, hashtable.length);
         }
         for (int i = 0; (hashtable[pos] != null); i++) {
             pos = (home + probe(i)) % hashtable.length; // probe
-            if (hashtable[pos] != null && k.equals(hashtable[pos].key())) {
+            if (hashtable[pos] != null) {
+                if (k.equals(hashtable[pos].key())) {
+                    if (hashtable[pos].getDeleted()) {
+                        this.count++;
+                        hashtable[pos] = elem;
+                        return true;
+                    }
+                    return false;
+                }
                 if (hashtable[pos].getDeleted()) {
                     this.count++;
                     hashtable[pos] = elem;
                     return true;
                 }
-                return false;
             }
         }
         this.count++;
@@ -82,6 +94,23 @@ public class Hash {
         return true;
     }
 
+    public boolean addRating(String name, String rate) {
+        int home = h(name, hashtable.length); // Home position for e
+        int pos = home; // Init probe sequence
+        for (int i = 0; (hashtable[pos] != null); i++) {
+            pos = (home + probe(i)) % hashtable.length; // probe
+            if (hashtable[pos] != null && name.equals(hashtable[pos].key())) {
+                if (hashtable[pos].rate() == null) {
+                    hashtable[pos].setRate(rate);
+                }
+                else {
+                    hashtable[pos].setRate(hashtable[pos].rate() + ":" + rate);
+                }
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * 
@@ -158,6 +187,16 @@ public class Hash {
         System.out.println("Total records: " + sum);
     }
 
+    /**
+     * prints the ratings
+     */
+    public void printRate() {
+        for (int i = 0; i < hashtable.length; i++) {
+            if (hashtable[i] != null && !hashtable[i].getDeleted()) {
+                System.out.println(hashtable[i].key() + ": " + hashtable[i].rate());
+            }
+        }
+    }
 
     /**
      * @param i

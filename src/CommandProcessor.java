@@ -14,15 +14,14 @@ import java.util.Scanner;
 public class CommandProcessor {
     private Hash movieHash;
     private Hash reviewHash;
+    private LinkedList<String> movieList;
+    private LinkedList<String> reviewList;
 
 
     /**
      * 
      * Constructor for CommandProcessor. Takes inputs from main method and
      * processes the commands.
-     * 
-     * @param memorySize
-     *            size of MemoryManager received from main method
      * 
      * @param hashSize
      *            size of Hash received from main method
@@ -32,7 +31,7 @@ public class CommandProcessor {
      *            processed
      * 
      */
-    public CommandProcessor(String memorySize, String hashSize, String file) {
+    public CommandProcessor(String hashSize, String file) {
         reviewHash = new Hash(Integer.valueOf(hashSize));
         movieHash = new Hash(Integer.valueOf(hashSize));
         Scanner scan = null;
@@ -64,14 +63,8 @@ public class CommandProcessor {
         // Analyze the input string and figure out which command
         String[] inputs = commandString.trim().split("\\s+");
         if (inputs[0].equals("add")) {
-            if (inputs[1].equals("reviewer")) {
-                commandString = commandString.replaceFirst("reviewer", "");
-                add(commandString);
-            }
-            else {
-                commandString = commandString.replaceFirst("movie", "");
-                add(commandString);
-            }
+            add(commandString);
+            listAdd(commandString);
             return true;
         }
         if (inputs[0].equals("delete")) {
@@ -89,7 +82,57 @@ public class CommandProcessor {
             print(commandString);
             return true;
         }
+        if (inputs[0].equals("list")) {
+            printList(commandString.replaceFirst("list", ""));
+        }
+        if (inputs[0].equals("similar")) {
+            printSimilar(commandString.replaceFirst("similar", ""));
+        }
         return false;
+    }
+
+
+    /**
+     * 
+     * @param inputs
+     *            is the string inputs
+     *            prints the list
+     */
+    public void printList(String inputs) {
+        inputs = inputs.trim();
+        String[] base = inputs.split("\\s+");
+        inputs.replace(base[0], "");
+        String name = base[1];
+        for (int i = 2; i < base.length; i++) {
+            name = name + " " + base[i].trim();
+        }
+        System.out.println("Cannot list, " + base[0] + " |" + name
+            + "| not found in the database.");
+    }
+
+
+    /**
+     * 
+     * @param inputs
+     *            is the string inputs
+     *            prints the similar movies/reviewers
+     */
+    public void printSimilar(String inputs) {
+        inputs = inputs.trim();
+        String[] base = inputs.split("\\s+");
+        inputs.replace(base[0], "");
+        String name = base[1];
+        for (int i = 2; i < base.length; i++) {
+            name = name + " " + base[i].trim();
+        }
+        if (base[0].equals("movie")) {
+            System.out.println("Movie |" + name
+                + "| not found in the database.");
+        }
+        else {
+            System.out.println("Reviewer |" + name
+                + "| not found in the database.");
+        }
     }
 
 
@@ -102,7 +145,13 @@ public class CommandProcessor {
     private void print(String printCommand) {
         String[] inputs = printCommand.trim().split("\\s+");
         if (inputs[1].equals("ratings")) {
-            System.out.println("There are no ratings in the database");
+            if (reviewHash.getCount() == 0) {
+                System.out.println("There are no ratings in the database");
+            }
+            else {
+                reviewHash.printRate();
+                movieHash.printRate();
+            }
         }
         else if (inputs[2].equals("reviewer")) {
             System.out.println("Reviewers:");
@@ -125,20 +174,71 @@ public class CommandProcessor {
         String name = addCommand.replaceFirst("add", "");
         name = formatString(name);
         String[] key = name.split("<SEP>");
-        boolean mcheck = movieHash.search(key[0]);
-        boolean rcheck = reviewHash.search(key[1]);
-        if (!mcheck) {
-            Handle mhandle = new Handle(10, 19, key[1].trim());
-            mhandle.setRecord(name.trim());
-            movieHash.add(key[1].trim(), mhandle);
+        boolean mcheck = movieHash.search(key[1].trim());
+        boolean rcheck = reviewHash.search(key[0].trim());
+        if (Integer.valueOf(key[2]) > 0 && Integer.valueOf(key[2]) < 11) {
+            if (!rcheck) {
+                Handle rhandle = new Handle(10, 19, key[0].trim());
+                rhandle.setRecord(name.trim());
+                if (reviewHash.getCount() >= reviewHash.getHashtable().length
+                    / 2) {
+                    System.out.println("Reviewer hash table size doubled to "
+                        + reviewHash.getHashtable().length * 2 + " slots.");
+                }
+                reviewHash.add(key[0].trim(), rhandle);
+                reviewHash.addRating(key[0], key[2]);
+            }
+            else {
+                reviewHash.addRating(key[0], key[2]);
+            }
+            if (!mcheck) {
+                Handle mhandle = new Handle(10, 19, key[1].trim());
+                mhandle.setRecord(name.trim());
+                if (movieHash.getCount() >= movieHash.getHashtable().length
+                    / 2) {
+                    System.out.println("Movie hash table size doubled to "
+                        + movieHash.getHashtable().length * 2 + " slots.");
+                }
+                movieHash.add(key[1].trim(), mhandle);
+                movieHash.addRating(key[1], key[2]);
+            }
+            else {
+                movieHash.addRating(key[1], key[2]);
+            }
+            System.out.println("Rating added: |" + key[0] + "|, |" + key[1]
+                + "|, " + key[2]);
         }
-        if (!rcheck) {
-            Handle rhandle = new Handle(10, 19, key[0].trim());
-            rhandle.setRecord(name.trim());
-            reviewHash.add(key[0].trim(), rhandle);
+        else {
+            System.out.println("Bad score |" + key[2]
+                + "|. Scores must be between 1 and 10.");
         }
-        System.out.println("Rating added: |" + key[0] + "|, |" + key[1] + "|, "
-            + key[2]);
+    }
+
+
+    public void listAdd(String Command) {
+        String name = Command.replaceFirst("add", "");
+        name = formatString(name);
+        String[] key = name.split("<SEP>");
+        key[0] = key[0].trim();
+        key[1] = key[1].trim();
+        if(!reviewList.contains(key[0])) {
+            reviewList.add(key[0]);
+        }
+        else {
+            InnerNode<String> inner = reviewList.getObject(key[0]);
+            if (inner == null) {
+                
+            }
+        }
+        if(!movieList.contains(key[1])) {
+            movieList.add(key[1]);
+        }
+        else {
+            InnerNode<String> inner = movieList.getObject(key[1]);
+            if (inner == null) {
+                
+            }
+        }
     }
 
 
@@ -193,6 +293,8 @@ public class CommandProcessor {
     /**
      * gets the Hash of commandP
      * 
+     * @param name
+     *            of hash
      * @return CommandP's hash
      */
     public Hash getHash(String name) {
@@ -204,4 +306,5 @@ public class CommandProcessor {
         }
         return null;
     }
+
 }

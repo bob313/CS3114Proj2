@@ -9,7 +9,7 @@ public class Handle {
     private int length;
     private String key;
     private boolean tombstone;
-
+    private String rating;
     private String record; // delete
 
 
@@ -29,7 +29,22 @@ public class Handle {
         this.tombstone = false;
     }
 
-
+    /**
+     * 
+     * @return returns the rating
+     */
+    public String rate() {
+        return rating;
+    }
+    
+    /**
+     * 
+     * @param rate is the rating to set
+     */
+    public void setRate(String rate) {
+        rating = rate;
+    }
+    
     /**
      * 
      * @return the key

@@ -63,6 +63,17 @@ public class HashTest extends TestCase {
         assertEquals(myHash.add("Death Note", second), false);
         myHash.print();
     }
+    
+    /**
+     * test search
+     */
+//    public void testsearch() {
+//        Hash myHash = new Hash(6);
+//        Handle first = new Handle(4, 4, "Spirited Away");
+//        Handle second = new Handle(5, 4, "Batman v Superman");
+//        Handle third = new Handle(6, 4, "third");
+//        Handle fourth = new Handle(4, 4, "fourth");
+//    }
 
 
     /**
