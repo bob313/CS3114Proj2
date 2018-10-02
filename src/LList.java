@@ -137,7 +137,15 @@ public interface LList<E>
      * @return
      */
     public abstract Node<E> getObject(E obj);
-
+    
+    /**
+     * Finds the index of the object in the list
+     * 
+     * @param obj
+     *            is the object to search for
+     * @return the index of the found object
+     */
+    public abstract int getIndex(E obj);
 
     /**
      * 

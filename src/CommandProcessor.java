@@ -221,28 +221,57 @@ public class CommandProcessor {
         String[] key = name.split("<SEP>");
         key[0] = key[0].trim();
         key[1] = key[1].trim();
-        if(!reviewList.contains(key[0])) {
+        key[2] = key[2].trim();
+        if (!reviewList.contains(key[0])) {
             reviewList.add(key[0]);
         }
-        else {
-            Node<String> row = reviewList.getObject(key[0]);
-            InnerNode<String> inner = row.getInnerNode();
-            if (inner == null) {
-                
-            }
-        }
-        if(!movieList.contains(key[1])) {
+        if (!movieList.contains(key[1])) {
             movieList.add(key[1]);
         }
+        Node<String> row = reviewList.getObject(key[0]);
+        Node<String> col = movieList.getObject(key[1]);
+        InnerNode<String> rInner = row.getInnerNode();
+        InnerNode<String> cInner = col.getInnerNode();
+        // tests for when inner node already exists
+        if (findIntersect(key[2], row, col) != null) {
+            col.getInnerNode().setData(key[2]);
+        }
         else {
-            Node<String> col = movieList.getObject(key[1]);
-            InnerNode<String> inner = col.getInnerNode();
-            if (inner == null) {
+            InnerNode<String> temp = new InnerNode<String>(key[2]);
+            // if for the first row
+            if (reviewList.get(0).equals(key[0])) {
+                if(movieList.get(0).equals(key[1])) {
+                    temp.setRight(row.getInnerNode());
+                    temp.setBottom(col.getInnerNode());
+                    row.setInnerNode(temp);
+                    col.setInnerNode(temp);
+                }
+                else if(cInner == null) {
+                    
+                }
+            }
+            // if for the first column
+            else if (movieList.get(0).equals(key[1])) {
+
+            }
+            // else just add the inner node in the matrix
+            else {
                 
             }
         }
+
     }
 
+    public InnerNode<String> findIntersect(String rating, Node<String> row, Node<String> col){
+        int index = reviewList.getIndex(rating);
+        InnerNode<String> temp = row.getInnerNode();
+        for(int i=0; i<=index; i++) {
+            if (temp == null) {
+                return null;
+            }
+            
+        }
+    }
 
     /**
      * Handles the delete command

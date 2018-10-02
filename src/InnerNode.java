@@ -1,5 +1,4 @@
 
-
 /**
  * This represents a node in a singly linked list. This node stores data
  * along with having a pointer to the next node in the list
@@ -123,5 +122,16 @@ public class InnerNode<D> {
      */
     public D getData() {
         return data;
+    }
+
+
+    /**
+     * updates the data value
+     * 
+     * @param d
+     *            is the new d to set value to
+     */
+    public void setData(D d) {
+        data = d;
     }
 }

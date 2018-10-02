@@ -1,5 +1,4 @@
 
-
 /**
  * This is a basic implementation of a linked list
  *
@@ -27,7 +26,8 @@ public class LinkedList<E> implements LList<E> {
         size = 0;
 
     }
-    
+
+
     /**
      * Gets the number of elements in the list
      *
@@ -216,14 +216,15 @@ public class LinkedList<E> implements LList<E> {
 // }
         return data;
     }
-    
+
+
     /**
      * 
      * @param obj
-     *             Object is the string to search for in the list
+     *            Object is the string to search for in the list
      * @return
      */
-    public Node<E> getObject(E obj){
+    public Node<E> getObject(E obj) {
         Node<E> current = head;
         if (head == null) {
             return null;
@@ -235,6 +236,30 @@ public class LinkedList<E> implements LList<E> {
             current = current.next();
         }
         return null;
+    }
+
+
+    /**
+     * Finds the index of teh object in the list
+     * 
+     * @param obj
+     *            is the object to search for
+     * @return the index of the found object
+     */
+    public int getIndex(E obj) {
+        Node<E> current = head;
+        int count = 0;
+        if (head == null) {
+            return -1;
+        }
+        while (current != null) {
+            if (current.getData().equals(obj)) {
+                return count;
+            }
+            current = current.next();
+            count++;
+        }
+        return -1;
     }
 
 
