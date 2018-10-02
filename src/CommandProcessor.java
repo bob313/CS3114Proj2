@@ -232,22 +232,23 @@ public class CommandProcessor {
         Node<String> col = movieList.getObject(key[1]);
         InnerNode<String> rInner = row.getInnerNode();
         InnerNode<String> cInner = col.getInnerNode();
+        InnerNode<String> inner = findIntersect(key[2], col);
         // tests for when inner node already exists
-        if (findIntersect(key[2], row, col) != null) {
-            col.getInnerNode().setData(key[2]);
+        if (inner != null) {
+            inner.setData(key[2]);
         }
         else {
-            InnerNode<String> temp = new InnerNode<String>(key[2]);
+            inner = new InnerNode<String>(key[2]);
             // if for the first row
             if (reviewList.get(0).equals(key[0])) {
-                if(movieList.get(0).equals(key[1])) {
-                    temp.setRight(row.getInnerNode());
-                    temp.setBottom(col.getInnerNode());
-                    row.setInnerNode(temp);
-                    col.setInnerNode(temp);
+                if (movieList.get(0).equals(key[1])) {
+                    inner.setRight(row.getInnerNode());
+                    inner.setBottom(col.getInnerNode());
+                    row.setInnerNode(inner);
+                    col.setInnerNode(inner);
                 }
-                else if(cInner == null) {
-                    
+                else if (cInner == null) {
+
                 }
             }
             // if for the first column
@@ -256,22 +257,37 @@ public class CommandProcessor {
             }
             // else just add the inner node in the matrix
             else {
-                
+
             }
         }
 
     }
 
-    public InnerNode<String> findIntersect(String rating, Node<String> row, Node<String> col){
+
+    /**
+     * finds the inner node if it exists
+     * 
+     * @param rating
+     *            is the rating to find
+     * @param col
+     *            is the column "list" to iterate through
+     * @return the innerNode found
+     */
+    public InnerNode<String> findIntersect(String rating, Node<String> col) {
         int index = reviewList.getIndex(rating);
-        InnerNode<String> temp = row.getInnerNode();
-        for(int i=0; i<=index; i++) {
+        InnerNode<String> temp = col.getInnerNode();
+        for (int i = 0; i <= index; i++) {
             if (temp == null) {
                 return null;
             }
-            
+            else if (temp.getData().equals(rating)) {
+                return temp;
+            }
+            temp = temp.bottom();
         }
+        return null;
     }
+
 
     /**
      * Handles the delete command
