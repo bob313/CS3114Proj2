@@ -106,4 +106,39 @@ public class Matrix {
         newString.deleteCharAt(newString.length() - 1);
         return newString.toString();
     }
+    
+    /**
+     * Prints the contents of the sparse matrix
+     */
+    public void print() {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < reviewList.size(); i++) {
+            System.out.println(reviewList.get(i) + ": " + i);
+        }
+        for (int i = 0; i < movieList.size(); i++) {
+            builder.append(movieList.get(i));
+            builder.append(":");
+            for (int j = 0; j < reviewList.size(); j++) {
+                builder.append(" ");
+                InnerNode<String> firstNode = movieList.getObject(movieList.get(i)).getInnerNode();
+                builder.append(getReviewScore(firstNode, j));
+            }
+        }
+        System.out.println(builder.toString());
+    }
+
+
+    /**
+     * Finds the review score at a specific position in a column
+     * @param firstNode the first node in the column
+     * @param index how far down the desired node is
+     * @return the value of the desired node
+     */
+    private String getReviewScore(InnerNode<String> firstNode, int index) {
+        InnerNode<String> currNode = firstNode;
+        for (int i = 0; i < index; i++) {
+            currNode = currNode.bottom();
+        }
+        return currNode.toString();
+    }
 }
