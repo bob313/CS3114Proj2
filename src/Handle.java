@@ -9,7 +9,6 @@ public class Handle {
     private int length;
     private String key;
     private boolean tombstone;
-    private String rating;
     private String record; // delete
 
 

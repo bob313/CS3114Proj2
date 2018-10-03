@@ -1,18 +1,31 @@
-
+/**
+ * 
+ * @author bob313 cdc97
+ * @version oct 2 2018
+ *
+ */
 public class SparseMatrix {
 
     private LinkedList<String> movieList;
     private LinkedList<String> reviewList;
 
 
+    /**
+     * sparse matrix
+     */
     public SparseMatrix() {
         movieList = new LinkedList<String>();
         reviewList = new LinkedList<String>();
     }
 
 
-    public void listAdd(String Command) {
-        String name = Command.replaceFirst("add", "");
+    /**
+     * 
+     * @param command
+     *            is the command string to add
+     */
+    public void listAdd(String command) {
+        String name = command.replaceFirst("add", "");
         name = formatString(name);
         String[] key = name.split("<SEP>");
         key[0] = key[0].trim();
@@ -155,8 +168,10 @@ public class SparseMatrix {
             if (curr == reviewNode) {
                 return true;
             }
+            // System.out.println(curr.getData());
             curr = curr.bottom();
         }
+        // System.out.println("new col");
         return false;
     }
 
@@ -164,9 +179,9 @@ public class SparseMatrix {
     /**
      * Checks if an inner node is contained in an inner node row
      * 
-     * @param reviewNode
+     * @param movieNode
      *            the inner node to check for
-     * @param movieNodeStart
+     * @param reviewNodeStart
      *            the start of the row to check
      * @return true if its in the column, false otherwise
      */
@@ -244,7 +259,7 @@ public class SparseMatrix {
      * Prints the contents of the sparse matrix
      */
     public void print() {
-        if (movieList.isEmpty() && reviewList.isEmpty()) {
+        if (movieList.isEmpty() || reviewList.isEmpty()) {
             System.out.println("There are no ratings in the database");
         }
 
@@ -294,14 +309,14 @@ public class SparseMatrix {
                 InnerNode<String> inner = temp.getObject(name).getInnerNode();
                 System.out.println("Ratings for " + list + " |" + name + "|:");
                 int i = 0;
-                while (inner != null) {
-                    if (this.rowContains(reviewList.getObject(reviewList.get(i))
-                        .getInnerNode(), inner)) {
+                while (inner != null && i < reviewList.size()) {
+                    if (this.rowContains(inner, reviewList.getObject(reviewList
+                        .get(i)).getInnerNode())) {
                         System.out.println(reviewList.get(i) + ": " + inner
                             .getData());
+                        inner = inner.bottom();
                     }
                     i++;
-                    inner = inner.bottom();
                 }
             }
         }
@@ -315,14 +330,16 @@ public class SparseMatrix {
                 InnerNode<String> inner = temp.getObject(name).getInnerNode();
                 System.out.println("Ratings for " + list + " |" + name + "|:");
                 int i = 0;
-                while (inner != null) {
-                    if (this.columnContains(reviewList.getObject(reviewList.get(
-                        i)).getInnerNode(), inner)) {
-                        System.out.println(reviewList.get(i) + ": " + inner
+                while (inner != null && i < movieList.size()) {
+                    if (this.columnContains(inner, movieList.getObject(movieList
+                        .get(i)).getInnerNode())) {
+                        System.out.println(movieList.get(i) + ": " + inner
                             .getData());
+                        inner = inner.right();
                     }
-                    i++;
-                    inner = inner.right();
+                    else {
+                        i++;
+                    }
                 }
             }
         }
@@ -331,6 +348,9 @@ public class SparseMatrix {
 
     /**
      * list getter method for testing
+     * 
+     * @return
+     *         the movieList
      */
     public LinkedList<String> getMovieList() {
         return movieList;
@@ -339,6 +359,9 @@ public class SparseMatrix {
 
     /**
      * list getter method for testing
+     * 
+     * @return
+     *         the reviewList
      */
     public LinkedList<String> getReviewList() {
         return reviewList;

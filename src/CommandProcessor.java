@@ -141,7 +141,7 @@ public class CommandProcessor {
     private void print(String printCommand) {
         String[] inputs = printCommand.trim().split("\\s+");
         if (inputs[1].equals("ratings")) {
-                matrix.print();
+            matrix.print();
         }
         else if (inputs[2].equals("reviewer")) {
             System.out.println("Reviewers:");
