@@ -244,7 +244,10 @@ public class SparseMatrix {
      * Prints the contents of the sparse matrix
      */
     public void print() {
-
+        if (movieList.isEmpty() && reviewList.isEmpty()) {
+            System.out.println("There are no ratings in the database");
+        }
+        
         for (int i = 0; i < reviewList.size(); i++) {
             System.out.println(reviewList.get(i) + ": " + i);
         }
