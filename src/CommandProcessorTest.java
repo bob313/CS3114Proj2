@@ -13,7 +13,7 @@ public class CommandProcessorTest extends TestCase {
      */
     public void testConstructor() {
         CommandProcessor processor = new CommandProcessor("6",
-            "P2sampleInput.txt");
+            "P2SampleInput.txt");
         assertNotNull(processor.getHash("movie"));
         assertNotNull(processor.getHash("review"));
     }

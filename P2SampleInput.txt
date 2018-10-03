@@ -7,6 +7,16 @@
    list   movie Death Note
    similar reviewer Darth Vader
    similar movie Death Note
+   add Hayao Miyazaki<SEP>Spirited Away<SEP>10
+   add Dr. Shaffer<SEP>Spirited Away<SEP>10
+   delete movie Spirited Away
+   print ratings
+      add Dr. Shaffer<SEP>Spirited Away<SEP>10
+   print ratings
+   delete reviewer Dr. Shaffer
+   print ratings
+   delete reviewer Hayao Miyazaki
+   delete movie Spirited Away
    add John Doe<SEP>Spirited Away<SEP>9
    delete movie John Doe
    delete reviewer  John Doe
@@ -42,8 +52,6 @@ print hashtable reviewer
 list reviewer David Lynch
 list reviewer   Darth 	Vader
  	   similar reviewer Darth Vader
-   
-       
-  
-  
+   list movie The Good,    the Bad and the Ugly
+   similar movie The Good, the Bad and the Ugly
    
