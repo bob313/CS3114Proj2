@@ -29,22 +29,7 @@ public class Handle {
         this.tombstone = false;
     }
 
-    /**
-     * 
-     * @return returns the rating
-     */
-    public String rate() {
-        return rating;
-    }
-    
-    /**
-     * 
-     * @param rate is the rating to set
-     */
-    public void setRate(String rate) {
-        rating = rate;
-    }
-    
+
     /**
      * 
      * @return the key
