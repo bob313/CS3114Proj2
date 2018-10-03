@@ -247,7 +247,7 @@ public class SparseMatrix {
         if (movieList.isEmpty() && reviewList.isEmpty()) {
             System.out.println("There are no ratings in the database");
         }
-        
+
         for (int i = 0; i < reviewList.size(); i++) {
             System.out.println(reviewList.get(i) + ": " + i);
         }
@@ -272,6 +272,60 @@ public class SparseMatrix {
             System.out.println(builder.toString());
         }
 
+    }
+
+
+    /**
+     * 
+     * @param list
+     *            is which linked list to scan through
+     * @param name
+     *            is the name of the object to search for
+     */
+    public void list(String list, String name) {
+        LinkedList<String> temp = reviewList;
+        if (list.equals("movie")) {
+            temp = movieList;
+            if (!temp.contains(name)) {
+                System.out.println("Cannot list, " + list + " |" + name
+                    + "| not found in the database.");
+            }
+            else {
+                InnerNode<String> inner = temp.getObject(name).getInnerNode();
+                System.out.println("Ratings for " + list + " |" + name + "|:");
+                int i = 0;
+                while (inner != null) {
+                    if (this.rowContains(reviewList.getObject(reviewList.get(i))
+                        .getInnerNode(), inner)) {
+                        System.out.println(reviewList.get(i) + ": " + inner
+                            .getData());
+                    }
+                    i++;
+                    inner = inner.bottom();
+                }
+            }
+        }
+        else {
+            temp = reviewList;
+            if (!temp.contains(name)) {
+                System.out.println("Cannot list, " + list + " |" + name
+                    + "| not found in the database.");
+            }
+            else {
+                InnerNode<String> inner = temp.getObject(name).getInnerNode();
+                System.out.println("Ratings for " + list + " |" + name + "|:");
+                int i = 0;
+                while (inner != null) {
+                    if (this.columnContains(reviewList.getObject(reviewList.get(
+                        i)).getInnerNode(), inner)) {
+                        System.out.println(reviewList.get(i) + ": " + inner
+                            .getData());
+                    }
+                    i++;
+                    inner = inner.right();
+                }
+            }
+        }
     }
 
 
