@@ -91,7 +91,7 @@ public class SparseMatrix {
             InnerNode<String> currNodeMovie = movieInner;
             LinkedList<AddListElement> movieColumnIndexes = new LinkedList<>();
             while (currNodeMovie != null) {
-                for (int i = 0; i < movieList.size(); i++) {
+                for (int i = 0; i < reviewList.size(); i++) {
                     if (rowContains(currNodeMovie, reviewList.getObject(
                         reviewList.get(i)).getInnerNode())) {
                         movieColumnIndexes.add(new AddListElement(i,
@@ -113,9 +113,9 @@ public class SparseMatrix {
                             movieList.getObject(key[1]).setInnerNode(inner);
                         }
                         else {
-                            reviewRowIndexes.get(i).innerNode.top().setBottom(
+                            movieColumnIndexes.get(i).innerNode.top().setBottom(
                                 inner);
-                            inner.setTop(reviewRowIndexes.get(i).innerNode
+                            inner.setTop(movieColumnIndexes.get(i).innerNode
                                 .top());
                         }
 
@@ -269,60 +269,6 @@ public class SparseMatrix {
             System.out.println(builder.toString());
         }
 
-    }
-
-
-    /**
-     * 
-     * @param list
-     *            is which linked list to scan through
-     * @param name
-     *            is the name of the object to search for
-     */
-    public void list(String list, String name) {
-        LinkedList<String> temp = reviewList;
-        if (list.equals("movie")) {
-            temp = movieList;
-            if (!temp.contains(name)) {
-                System.out.println("Cannot list, " + list + " |" + name
-                    + "| not found in the database.");
-            }
-            else {
-                InnerNode<String> inner = temp.getObject(name).getInnerNode();
-                System.out.println("Ratings for " + list + " |" + name + "|:");
-                int i = 0;
-                while (inner != null) {
-                    if (this.rowContains(reviewList.getObject(reviewList.get(i))
-                        .getInnerNode(), inner)) {
-                        System.out.println(reviewList.get(i) + ": " + inner
-                            .getData());
-                    }
-                    i++;
-                    inner = inner.bottom();
-                }
-            }
-        }
-        else {
-            temp = reviewList;
-            if (!temp.contains(name)) {
-                System.out.println("Cannot list, " + list + " |" + name
-                    + "| not found in the database.");
-            }
-            else {
-                InnerNode<String> inner = temp.getObject(name).getInnerNode();
-                System.out.println("Ratings for " + list + " |" + name + "|:");
-                int i = 0;
-                while (inner != null) {
-                    if (this.columnContains(reviewList.getObject(reviewList.get(
-                        i)).getInnerNode(), inner)) {
-                        System.out.println(reviewList.get(i) + ": " + inner
-                            .getData());
-                    }
-                    i++;
-                    inner = inner.right();
-                }
-            }
-        }
     }
 
 
