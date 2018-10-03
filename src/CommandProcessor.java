@@ -124,12 +124,10 @@ public class CommandProcessor {
             name = name + " " + base[i].trim();
         }
         if (base[0].equals("movie")) {
-            System.out.println("Movie |" + name
-                + "| not found in the database.");
+            System.out.println("There is no movie similar to |" + name + "|");
         }
         else {
-            System.out.println("Reviewer |" + name
-                + "| not found in the database.");
+            System.out.println("There is no reviewer similar to |" + "|");
         }
     }
 
