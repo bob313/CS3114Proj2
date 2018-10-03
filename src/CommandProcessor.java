@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class CommandProcessor {
     private Hash movieHash;
     private Hash reviewHash;
-    private Matrix matrix;
+    private SparseMatrix matrix;
 
 
     /**
@@ -33,7 +33,7 @@ public class CommandProcessor {
     public CommandProcessor(String hashSize, String file) {
         reviewHash = new Hash(Integer.valueOf(hashSize));
         movieHash = new Hash(Integer.valueOf(hashSize));
-        matrix = new Matrix();
+        matrix = new SparseMatrix();
         Scanner scan = null;
         try {
             scan = new Scanner(new File(file));
@@ -101,13 +101,11 @@ public class CommandProcessor {
     public void printList(String inputs) {
         inputs = inputs.trim();
         String[] base = inputs.split("\\s+");
-        inputs.replace(base[0], "");
         String name = base[1];
         for (int i = 2; i < base.length; i++) {
             name = name + " " + base[i].trim();
         }
-        System.out.println("Cannot list, " + base[0] + " |" + name
-            + "| not found in the database.");
+        matrix.list(base[0], name);
     }
 
 
@@ -149,8 +147,7 @@ public class CommandProcessor {
                 System.out.println("There are no ratings in the database");
             }
             else {
-                reviewHash.printRate();
-                movieHash.printRate();
+                matrix.print();
             }
         }
         else if (inputs[2].equals("reviewer")) {
@@ -186,10 +183,6 @@ public class CommandProcessor {
                         + reviewHash.getHashtable().length * 2 + " slots.");
                 }
                 reviewHash.add(key[0].trim(), rhandle);
-                reviewHash.addRating(key[0], key[2]);
-            }
-            else {
-                reviewHash.addRating(key[0], key[2]);
             }
             if (!mcheck) {
                 Handle mhandle = new Handle(10, 19, key[1].trim());
@@ -200,10 +193,6 @@ public class CommandProcessor {
                         + movieHash.getHashtable().length * 2 + " slots.");
                 }
                 movieHash.add(key[1].trim(), mhandle);
-                movieHash.addRating(key[1], key[2]);
-            }
-            else {
-                movieHash.addRating(key[1], key[2]);
             }
             System.out.println("Rating added: |" + key[0] + "|, |" + key[1]
                 + "|, " + key[2]);
@@ -213,6 +202,7 @@ public class CommandProcessor {
                 + "|. Scores must be between 1 and 10.");
         }
     }
+
 
     /**
      * Handles the delete command

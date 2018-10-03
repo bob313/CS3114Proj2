@@ -4,6 +4,7 @@
  * along with having a pointer to the next node in the list
  * 
  * @author bob bao bob313 Christian Carminucci cdc97
+ * @version Oct 2 2018
  *
  * @param <D>
  *            data type

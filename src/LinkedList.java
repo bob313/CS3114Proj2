@@ -223,6 +223,7 @@ public class LinkedList<E> implements LList<E> {
      * @param obj
      *            Object is the string to search for in the list
      * @return
+     *         return the node where the object is located
      */
     public Node<E> getObject(E obj) {
         Node<E> current = head;
