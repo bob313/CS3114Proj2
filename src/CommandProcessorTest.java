@@ -17,5 +17,4 @@ public class CommandProcessorTest extends TestCase {
         assertNotNull(processor.getHash("movie"));
         assertNotNull(processor.getHash("review"));
     }
-    // herro
 }
