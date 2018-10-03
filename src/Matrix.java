@@ -6,7 +6,8 @@ public class SparseMatrix {
     
 
     public SparseMatrix() {
-        
+        movieList = new LinkedList<String>();
+        reviewList = new LinkedList<String>();
     }
     
     public void listAdd(String Command) {
@@ -35,51 +36,85 @@ public class SparseMatrix {
         }
         //replica case
         boolean replica = checkForReplica(reviewInner, movieInner, key[2]);
-        //sets up a linked list containing indices for a review row
-        InnerNode<String> currNodeReview = reviewInner;
-        LinkedList<AddListElement> reviewRowIndexes = new LinkedList<>();
-        while (!replica && currNodeReview != null) {
-            for (int i = 0; i < movieList.size(); i++) {
-                if (columnContains(currNodeReview, movieList.getObject(movieList.get(i)).getInnerNode())) {
-                    reviewRowIndexes.add(new AddListElement(i, currNodeReview));
+        if (!replica) {
+          //sets up a linked list containing indices for a review row
+            InnerNode<String> currNodeReview = reviewInner;
+            LinkedList<AddListElement> reviewRowIndexes = new LinkedList<>();
+            while (currNodeReview != null) {
+                for (int i = 0; i < movieList.size(); i++) {
+                    if (columnContains(currNodeReview, movieList.getObject(movieList.get(i)).getInnerNode())) {
+                        reviewRowIndexes.add(new AddListElement(i, currNodeReview));
+                    }
+                }
+                currNodeReview = currNodeReview.right();
+            }
+            InnerNode<String> inner = new InnerNode<String>(key[2]); //new node
+            //adding new node to correct column
+            if (reviewRowIndexes.isEmpty()) {
+                reviewList.getObject(key[0]).setInnerNode(inner);
+            }
+            else {
+                boolean addedToRow = false;
+                for (int i = 0; i < reviewRowIndexes.size(); i++) {
+                    if (reviewRowIndexes.get(i).index > movieIndex) {
+                        //case where new element is firt in row
+                        if (reviewRowIndexes.get(i).innerNode.left() == null) {
+                            reviewList.getObject(key[0]).setInnerNode(inner);
+                        }
+                        else {
+                            reviewRowIndexes.get(i-1).innerNode.setRight(inner);
+                            inner.setLeft(reviewRowIndexes.get(i-1).innerNode);
+                        }
+                        
+                        reviewRowIndexes.get(i).innerNode.setLeft(inner);
+                        inner.setRight(reviewRowIndexes.get(i).innerNode);
+                        addedToRow = true;
+                        break;
+                    }
+                }
+                //case where new element is last in row
+                if (!addedToRow) {
+                    reviewRowIndexes.get(reviewRowIndexes.size() - 1).innerNode.setRight(inner);
                 }
             }
-            currNodeReview = currNodeReview.right();
-        }
-        InnerNode<String> inner = new InnerNode<String>(key[2]); //new node
-        //adding new node to correct column
-        if (reviewRowIndexes.isEmpty()) {
-            reviewList.getObject(key[0]).setInnerNode(inner);
-        }
-        for (int i = 0; i < reviewRowIndexes.size(); i++) {
-            if (reviewRowIndexes.get(i).index > movieIndex) {
-                reviewRowIndexes.get(i).innerNode.setLeft(inner);
-                inner.setRight(reviewRowIndexes.get(i).innerNode);
-                reviewRowIndexes.get(i-1).innerNode.setRight(inner);
-                inner.setLeft(reviewRowIndexes.get(i-1).innerNode);
-            }
-        }
-      //sets up a linked list containing indices for a movie column
-        InnerNode<String> currNodeMovie = movieInner;
-        LinkedList<AddListElement> movieColumnIndexes = new LinkedList<>();
-        while (!replica && currNodeMovie != null) {
-            for (int i = 0; i < movieList.size(); i++) {
-                if (rowContains(currNodeMovie, reviewList.getObject(reviewList.get(i)).getInnerNode())) {
-                    movieColumnIndexes.add(new AddListElement(i, currNodeMovie));
+          //sets up a linked list containing indices for a movie column
+            InnerNode<String> currNodeMovie = movieInner;
+            LinkedList<AddListElement> movieColumnIndexes = new LinkedList<>();
+            while (currNodeMovie != null) {
+                for (int i = 0; i < movieList.size(); i++) {
+                    if (rowContains(currNodeMovie, reviewList.getObject(reviewList.get(i)).getInnerNode())) {
+                        movieColumnIndexes.add(new AddListElement(i, currNodeMovie));
+                    }
                 }
+                currNodeMovie = currNodeMovie.bottom();
             }
-            currNodeMovie = currNodeMovie.bottom();
-        }
-        //adding new node to correct row
-        if (movieColumnIndexes.isEmpty()) {
-            movieList.getObject(key[1]).setInnerNode(inner);
-        }
-        for (int i = 0; i < movieColumnIndexes.size(); i++) {
-            if (movieColumnIndexes.get(i).index > reviewIndex) {
-                movieColumnIndexes.get(i).innerNode.setTop(inner);
-                inner.setBottom(reviewRowIndexes.get(i).innerNode);
-                reviewRowIndexes.get(i-1).innerNode.setBottom(inner);
-                inner.setTop(reviewRowIndexes.get(i-1).innerNode);
+            //adding new node to correct row
+            if (movieColumnIndexes.isEmpty()) {
+                movieList.getObject(key[1]).setInnerNode(inner);
+            }
+            else {
+                boolean addedToColumn = false;
+                for (int i = 0; i < movieColumnIndexes.size(); i++) {
+                    if (movieColumnIndexes.get(i).index > reviewIndex) {
+                        //case where new element is first in column
+                        if (movieColumnIndexes.get(i).innerNode.top() == null) {
+                            movieList.getObject(key[1]).setInnerNode(inner);
+                        }
+                        else {
+                            reviewRowIndexes.get(i-1).innerNode.setBottom(inner);
+                            inner.setTop(reviewRowIndexes.get(i-1).innerNode);
+                        }
+                        
+                        movieColumnIndexes.get(i).innerNode.setTop(inner);
+                        inner.setBottom(reviewRowIndexes.get(i).innerNode);
+                        break;
+                    }
+                    
+                } 
+                // case where new element is last in column
+                if (!addedToColumn) {
+                    movieColumnIndexes.get(movieColumnIndexes.size() - 1).innerNode.setBottom(inner);
+                }
             }
         }
     }
@@ -193,20 +228,22 @@ public class SparseMatrix {
      * Prints the contents of the sparse matrix
      */
     public void print() {
-        StringBuilder builder = new StringBuilder();
+        
         for (int i = 0; i < reviewList.size(); i++) {
             System.out.println(reviewList.get(i) + ": " + i);
         }
         for (int i = 0; i < movieList.size(); i++) {
+            StringBuilder builder = new StringBuilder();
             builder.append(movieList.get(i));
             builder.append(":");
             for (int j = 0; j < reviewList.size(); j++) {
-                builder.append(" ");
+                builder.append(" " + j + ":");
                 InnerNode<String> firstNode = movieList.getObject(movieList.get(i)).getInnerNode();
                 builder.append(getReviewScore(firstNode, j));
             }
+            System.out.println(builder.toString());
         }
-        System.out.println(builder.toString());
+        
     }
 
 
@@ -218,9 +255,23 @@ public class SparseMatrix {
      */
     private String getReviewScore(InnerNode<String> firstNode, int index) {
         InnerNode<String> currNode = firstNode;
-        for (int i = 0; i < index; i++) {
+        for (int i = 0; i < index - 1; i++) {
             currNode = currNode.bottom();
         }
-        return currNode.toString();
+        return currNode.getData();
     }
+    
+    /**
+     * list getter method for testing
+     */
+     public LinkedList<String> getMovieList() {
+         return movieList;
+     }
+     
+     /**
+      * list getter method for testing
+      */
+      public LinkedList<String> getReviewList() {
+          return reviewList;
+      }
 }
