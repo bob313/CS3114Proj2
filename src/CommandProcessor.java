@@ -139,8 +139,8 @@ public class CommandProcessor {
             }
         }
         else {
-                System.out.println("There is no " + base[0] + " similar to |" + name
-                    + "|");
+            System.out.println("There is no " + base[0] + " similar to |" + name
+                + "|");
         }
     }
 

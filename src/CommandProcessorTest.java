@@ -22,9 +22,19 @@ public class CommandProcessorTest extends TestCase {
     /**
      * tests to make sure ratings are proper when adding
      */
-    public void testadd() {
+    public void testAdd() {
         CommandProcessor processor = new CommandProcessor("6", "addrating.txt");
         assertEquals(processor.getHash("movie").getCount(), 0);
         assertEquals(processor.getHash("review").getCount(), 0);
+    }
+    
+    /**
+     * Tests for printing an empty matrix
+     */
+    public void testEmpty() {
+        CommandProcessor processor = new CommandProcessor("6",
+            "emptiness.txt");
+        assertNotNull(processor.getHash("movie"));
+        assertNotNull(processor.getHash("review"));
     }
 }
