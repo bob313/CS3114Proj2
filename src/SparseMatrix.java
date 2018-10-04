@@ -149,6 +149,96 @@ public class SparseMatrix {
 
 
     /**
+     * Deletes a review row from the sparse matrix
+     * 
+     * @param rowName
+     *            the row to be deleted
+     */
+    public void deleteReview(String rowName) {
+        InnerNode<String> currNode = reviewList.getObject(rowName)
+            .getInnerNode();
+        while (currNode.right() != null) {
+            InnerNode<String> nextNode = currNode.right();
+            if (currNode.top() != null) {
+                currNode.top().setBottom(currNode.bottom());
+                nextNode.setTop(currNode.top());
+            }
+            else {
+                Node<String> movieListElement = getMoveListElement(currNode);
+                movieListElement.setInnerNode(currNode.bottom());
+                nextNode.setTop(null);
+            }
+            currNode = nextNode;
+
+        }
+
+    }
+
+
+    /**
+     * Deletes a movie column from the sparse Matrix
+     * 
+     * @param movieName
+     *            the movie to be deleted
+     */
+    public void deleteMovie(String movieName) {
+        InnerNode<String> currNode = reviewList.getObject(movieName)
+            .getInnerNode();
+        while (currNode.bottom() != null) {
+            InnerNode<String> nextNode = currNode.bottom();
+            if (currNode.left() != null) {
+                currNode.left().setRight(currNode.right());
+                nextNode.setLeft(currNode.left());
+            }
+            else {
+                Node<String> reviewListElement = getReviewListElement(currNode);
+                reviewListElement.setInnerNode(currNode.right());
+                nextNode.setLeft(null);
+            }
+            currNode = nextNode;
+
+        }
+
+    }
+
+
+    /**
+     * Gets the element from the movie list that a given node is part of.
+     * 
+     * @param innerNode
+     *            the given inner node
+     * @return the element of movieList that points to the inner node
+     */
+    private Node<String> getMoveListElement(InnerNode<String> innerNode) {
+        for (int i = 0; i < movieList.size(); i++) {
+            if (columnContains(innerNode, movieList.getObject(movieList.get(i))
+                .getInnerNode())) {
+                return movieList.getObject(movieList.get(i));
+            }
+        }
+        return null;
+    }
+
+
+    /**
+     * Gets the element from the review list that a given node is part of.
+     * 
+     * @param innerNode
+     *            the given inner node
+     * @return the element of reviewList that points to the inner node
+     */
+    private Node<String> getReviewListElement(InnerNode<String> innerNode) {
+        for (int i = 0; i < reviewList.size(); i++) {
+            if (rowContains(innerNode, reviewList.getObject(reviewList.get(i))
+                .getInnerNode())) {
+                return reviewList.getObject(reviewList.get(i));
+            }
+        }
+        return null;
+    }
+
+
+    /**
      * Checks if an inner node is contained in an inner node column
      * 
      * @param reviewNode
@@ -357,6 +447,140 @@ public class SparseMatrix {
                 }
             }
         }
+    }
+
+
+    /**
+     * returns an array with similarity values
+     * 
+     * @param listType
+     *            is which list to search through movie or reviewer
+     * @param name
+     *            is the name of the movie or reviewer to compare against
+     * @return
+     *         the similarity array
+     */
+    public int[] similarity(String listType, String name) {
+        LinkedList<String> temp = reviewList;
+        if (listType.equals("movie")) {
+            temp = reviewList;
+        }
+        int[] similar = new int[temp.size()];
+        int orig = temp.getIndex(name);
+        for (int i = 0; i < similar.length; i++) {
+            if (temp.get(i).equals(name)) {
+                similar[i] = 10;
+            }
+            else {
+                if (listType.equals("movie")) {
+                    similar[i] = movieDiff(orig, i);
+                }
+                else {
+                    similar[i] = reviewDiff(orig, i);
+                }
+            }
+        }
+        return similar;
+    }
+
+
+    /**
+     * 
+     * @param orig
+     *            is the original movie
+     * @param compare
+     *            is the movie to compare to
+     * @return
+     *         the similarity score between two movies
+     */
+    private int movieDiff(int orig, int compare) {
+        int i = 0;
+        int sum = 0;
+        boolean shared = false;
+        InnerNode<String> origCounter = movieList.getObject(movieList.get(orig))
+            .getInnerNode();
+        InnerNode<String> compCounter = movieList.getObject(movieList.get(
+            compare)).getInnerNode();
+        while (compCounter != null && origCounter != null) {
+            if (!rowContains(reviewList.getObject(reviewList.get(i))
+                .getInnerNode(), origCounter) && !rowContains(reviewList
+                    .getObject(reviewList.get(i)).getInnerNode(),
+                    compCounter)) {
+                origCounter = origCounter.bottom();
+                compCounter = compCounter.bottom();
+            }
+            else if (rowContains(reviewList.getObject(reviewList.get(i))
+                .getInnerNode(), origCounter) && rowContains(reviewList
+                    .getObject(reviewList.get(i)).getInnerNode(),
+                    compCounter)) {
+                shared = true;
+                sum += Integer.valueOf(origCounter.getData()) + Integer.valueOf(
+                    compCounter.getData());
+                origCounter = origCounter.bottom();
+                compCounter = compCounter.bottom();
+            }
+            else if (rowContains(reviewList.getObject(reviewList.get(i))
+                .getInnerNode(), compCounter)) {
+                compCounter = compCounter.bottom();
+            }
+            else {
+                origCounter = origCounter.bottom();
+            }
+            i++;
+        }
+        if (!shared) {
+            sum = 10;
+        }
+        return sum;
+    }
+
+
+    /**
+     * 
+     * @param orig
+     *            is the original movie
+     * @param compare
+     *            is the movie to compare to
+     * @return
+     *         the similarity score between two movies
+     */
+    private int reviewDiff(int orig, int compare) {
+        int i = 0;
+        int sum = 0;
+        boolean shared = false;
+        InnerNode<String> origCounter = reviewList.getObject(reviewList.get(
+            orig)).getInnerNode();
+        InnerNode<String> compCounter = reviewList.getObject(reviewList.get(
+            compare)).getInnerNode();
+        while (compCounter != null && origCounter != null) {
+            if (!rowContains(movieList.getObject(movieList.get(i))
+                .getInnerNode(), origCounter) && !rowContains(movieList
+                    .getObject(movieList.get(i)).getInnerNode(), compCounter)) {
+                origCounter = origCounter.right();
+                compCounter = compCounter.right();
+            }
+            else if (rowContains(movieList.getObject(movieList.get(i))
+                .getInnerNode(), origCounter) && rowContains(movieList
+                    .getObject(movieList.get(i)).getInnerNode(), compCounter)) {
+                shared = true;
+                sum += Integer.valueOf(origCounter.getData()) + Integer.valueOf(
+                    compCounter.getData());
+                origCounter = origCounter.right();
+                compCounter = compCounter.right();
+            }
+            else if (rowContains(movieList.getObject(movieList.get(i))
+                .getInnerNode(), compCounter)) {
+                compCounter = compCounter.right();
+            }
+            else {
+                origCounter = origCounter.right();
+            }
+            i++;
+        }
+        if (!shared) {
+            sum = 10;
+        }
+        return sum;
     }
 
 
