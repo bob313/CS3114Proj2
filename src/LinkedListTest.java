@@ -42,10 +42,10 @@ public class LinkedListTest extends TestCase {
         smallListB.add("swimming");
         smallListB.add("gymnastics");
 
-        // bigListA = new LinkedList<String>();
+        bigListA = new LinkedList<String>();
 
         for (int i = 0; i < 100; i++) {
-            // bigListA.add("sport" + i);
+            bigListA.add("sport" + i);
         }
 
         bigListB = new LinkedList<String>();
@@ -54,7 +54,7 @@ public class LinkedListTest extends TestCase {
         }
 
         // to be explicit
-        // nullObject = null;
+        nullObject = null;
     }
 
 
@@ -176,24 +176,25 @@ public class LinkedListTest extends TestCase {
     }
 
 
-// /**
-// * tests remove method
-// */
-// public void testremove() {
-// assertTrue(smallListA.remove("soccer"));
-// assertEquals(smallListA.size(), 2);
-// assertFalse(smallListA.remove("aple"));
-// assertEquals(smallListA.size(), 2);
-// smallListA.add("hi");
-// smallListA.add("die");
-// smallListA.remove("hi");
-// assertEquals(smallListA.size(), 3);
-// assertTrue(smallListA.remove("gymnastics"));
-// assertEquals(smallListA.size(), 2);
-// assertTrue(smallListA.remove("die"));
-// assertTrue(smallListA.remove("swimming"));
-// assertFalse(smallListA.remove("ha"));
-// }
+    /**
+     * tests remove method
+     */
+    public void testremove() {
+        assertTrue(smallListA.remove("soccer"));
+        assertEquals(smallListA.size(), 3);
+        assertFalse(smallListA.remove("aple"));
+        assertEquals(smallListA.size(), 3);
+        smallListA.add("hi");
+        smallListA.add("die");
+        smallListA.remove("hi");
+        assertEquals(smallListA.size(), 5);
+        assertTrue(smallListA.remove("gymnastics"));
+        assertEquals(smallListA.size(), 5);
+        assertTrue(smallListA.remove("die"));
+        assertTrue(smallListA.remove("swimming"));
+        assertFalse(smallListA.remove("ha"));
+    }
+
 
     /**
      * tests the get method
