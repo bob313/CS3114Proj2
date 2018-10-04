@@ -11,4 +11,5 @@
    add Dr. Shaffer<SEP>Spirited Away<SEP>11
    print ratings
 add Dastardly<SEP>KBBQ<SEP>4
+delete movie KBBQ
 print ratings

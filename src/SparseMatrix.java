@@ -536,31 +536,29 @@ public class SparseMatrix {
     private int movieDiff(int orig, int compare) {
         int i = 0;
         int sum = 0;
-        boolean shared = false;
+        int count = 0;
         InnerNode<String> origCounter = movieList.getObject(movieList.get(orig))
             .getInnerNode();
         InnerNode<String> compCounter = movieList.getObject(movieList.get(
             compare)).getInnerNode();
         while (compCounter != null && origCounter != null) {
-            if (!rowContains(reviewList.getObject(reviewList.get(i))
-                .getInnerNode(), origCounter) && !rowContains(reviewList
-                    .getObject(reviewList.get(i)).getInnerNode(),
-                    compCounter)) {
+            if (!rowContains(origCounter, reviewList.getObject(reviewList.get(
+                i)).getInnerNode()) && !rowContains(compCounter, reviewList
+                    .getObject(reviewList.get(i)).getInnerNode())) {
                 origCounter = origCounter.bottom();
                 compCounter = compCounter.bottom();
             }
-            else if (rowContains(reviewList.getObject(reviewList.get(i))
-                .getInnerNode(), origCounter) && rowContains(reviewList
-                    .getObject(reviewList.get(i)).getInnerNode(),
-                    compCounter)) {
-                shared = true;
-                sum += Integer.valueOf(origCounter.getData()) + Integer.valueOf(
-                    compCounter.getData());
+            else if (rowContains(origCounter, reviewList.getObject(reviewList
+                .get(i)).getInnerNode()) && rowContains(compCounter, reviewList
+                    .getObject(reviewList.get(i)).getInnerNode())) {
+                sum += Math.abs(Integer.valueOf(origCounter.getData()) - Integer
+                    .valueOf(compCounter.getData()));
                 origCounter = origCounter.bottom();
                 compCounter = compCounter.bottom();
+                count++;
             }
-            else if (rowContains(reviewList.getObject(reviewList.get(i))
-                .getInnerNode(), compCounter)) {
+            else if (rowContains(compCounter, reviewList.getObject(reviewList
+                .get(i)).getInnerNode())) {
                 compCounter = compCounter.bottom();
             }
             else {
@@ -568,10 +566,10 @@ public class SparseMatrix {
             }
             i++;
         }
-        if (!shared) {
-            sum = 10;
+        if (count == 0) {
+            return 10;
         }
-        return sum;
+        return sum / count;
     }
 
 
@@ -587,29 +585,29 @@ public class SparseMatrix {
     private int reviewDiff(int orig, int compare) {
         int i = 0;
         int sum = 0;
-        boolean shared = false;
+        int count = 0;
         InnerNode<String> origCounter = reviewList.getObject(reviewList.get(
             orig)).getInnerNode();
         InnerNode<String> compCounter = reviewList.getObject(reviewList.get(
             compare)).getInnerNode();
         while (compCounter != null && origCounter != null) {
-            if (!rowContains(movieList.getObject(movieList.get(i))
-                .getInnerNode(), origCounter) && !rowContains(movieList
-                    .getObject(movieList.get(i)).getInnerNode(), compCounter)) {
+            if (!columnContains(origCounter, movieList.getObject(movieList.get(
+                i)).getInnerNode()) && !columnContains(compCounter, movieList
+                    .getObject(movieList.get(i)).getInnerNode())) {
                 origCounter = origCounter.right();
                 compCounter = compCounter.right();
             }
-            else if (rowContains(movieList.getObject(movieList.get(i))
-                .getInnerNode(), origCounter) && rowContains(movieList
-                    .getObject(movieList.get(i)).getInnerNode(), compCounter)) {
-                shared = true;
-                sum += Integer.valueOf(origCounter.getData()) + Integer.valueOf(
-                    compCounter.getData());
+            else if (columnContains(origCounter, movieList.getObject(movieList
+                .get(i)).getInnerNode()) && columnContains(compCounter,
+                    movieList.getObject(movieList.get(i)).getInnerNode())) {
+                count++;
+                sum += Math.abs(Integer.valueOf(origCounter.getData()) - Integer
+                    .valueOf(compCounter.getData()));
                 origCounter = origCounter.right();
                 compCounter = compCounter.right();
             }
-            else if (rowContains(movieList.getObject(movieList.get(i))
-                .getInnerNode(), compCounter)) {
+            else if (columnContains(compCounter, movieList.getObject(movieList
+                .get(i)).getInnerNode())) {
                 compCounter = compCounter.right();
             }
             else {
@@ -617,10 +615,10 @@ public class SparseMatrix {
             }
             i++;
         }
-        if (!shared) {
-            sum = 10;
+        if (count == 0) {
+            return 10;
         }
-        return sum;
+        return sum / count;
     }
 
 

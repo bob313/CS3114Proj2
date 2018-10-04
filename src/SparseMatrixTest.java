@@ -123,4 +123,26 @@ public class SparseMatrixTest extends TestCase {
         assertEquals("10", matrix.getMovieList().getObject(matrix.getMovieList()
             .get(0)).getInnerNode().getData());
     }
+    
+    public void testSimilarity() {
+        matrix = new SparseMatrix();
+        matrix.print();
+        matrix.listAdd("Dr. Shaffer<SEP>Spirited Away<SEP>10");
+        matrix.print();
+        assertEquals("10", matrix.getMovieList().getObject(matrix.getMovieList()
+            .get(0)).getInnerNode().getData());
+        matrix.listAdd("Dr. Shaffer<SEP>Spirited Away<SEP>7");
+        matrix.print();
+        assertEquals("7", matrix.getMovieList().getObject(matrix.getMovieList()
+            .get(0)).getInnerNode().getData());
+        matrix.listAdd("Dr. Shaffer<SEP>Another Movie<SEP>8");
+        matrix.print();
+        matrix.listAdd("Christian<SEP>Spirited Away<SEP>2");
+        matrix.print();
+        assertEquals("2", matrix.getReviewList().getObject(matrix
+            .getReviewList().get(1)).getInnerNode().getData());
+        matrix.listAdd("Bob<SEP>Another Movie<SEP>5");
+        matrix.similarScore("reviewer", "Christian");
+        matrix.similarScore("movie", "Spirited Away");
+    }
 }
