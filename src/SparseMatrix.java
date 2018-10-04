@@ -370,23 +370,26 @@ public class SparseMatrix {
      * Prints the contents of the sparse matrix
      */
     public void print() {
-        if (movieList.isEmpty() || reviewList.isEmpty() || emptiness()) {
+        if (movieList.isEmpty() || reviewList.isEmpty()) {
             System.out.println("There are no ratings in the database");
         }
-        else {
-            for (int i = 0; i < reviewList.size(); i++) {
+
+        for (int i = 0; i < reviewList.size(); i++) {
+            if (reviewList.get(i) != "") {
                 System.out.println(reviewList.get(i) + ": " + i);
             }
-            for (int i = 0; i < movieList.size(); i++) {
-                StringBuilder builder = new StringBuilder();
+        }
+        for (int i = 0; i < movieList.size(); i++) {
+            StringBuilder builder = new StringBuilder();
+            if (movieList.get(i) != "") {
                 builder.append(movieList.get(i));
                 builder.append(":");
                 InnerNode<String> curr = movieList.getObject(movieList.get(i))
                     .getInnerNode();
                 while (curr != null) {
                     for (int j = 0; j < reviewList.size(); j++) {
-                        if (rowContains(curr, reviewList.getObject(reviewList
-                            .get(j)).getInnerNode())) {
+                        if (rowContains(curr, reviewList.getObject(reviewList.get(
+                            j)).getInnerNode())) {
                             builder.append(" " + j + ":");
                             builder.append(curr.getData());
                             break;
@@ -397,7 +400,9 @@ public class SparseMatrix {
 
                 System.out.println(builder.toString());
             }
+            
         }
+
     }
 
 
