@@ -147,6 +147,80 @@ public class SparseMatrix {
         }
     }
 
+        /**
+     * Deletes a review row from the sparse matrix
+     * @param rowName the row to be deleted
+     */
+    public void deleteReview(String rowName) {
+        InnerNode<String> currNode = reviewList.getObject(rowName).getInnerNode();
+        while (currNode.right() != null) {
+            InnerNode<String> nextNode = currNode.right();
+            if (currNode.top() != null) {
+                currNode.top().setBottom(currNode.bottom());
+                nextNode.setTop(currNode.top());
+            }
+            else {
+                Node<String> movieListElement = getMoveListElement(currNode);
+                movieListElement.setInnerNode(currNode.bottom());
+                nextNode.setTop(null);
+            }
+            currNode = nextNode;
+            
+        }
+        
+    }
+    
+    /**
+     * Deletes a movie column from the sparse Matrix
+     * @param movieName the movie to be deleted
+     */
+    public void deleteMovie(String movieName) {
+        InnerNode<String> currNode = reviewList.getObject(movieName).getInnerNode();
+        while (currNode.bottom() != null) {
+            InnerNode<String> nextNode = currNode.bottom();
+            if (currNode.left() != null) {
+                currNode.left().setRight(currNode.right());
+                nextNode.setLeft(currNode.left());
+            }
+            else {
+                Node<String> reviewListElement = getReviewListElement(currNode);
+                reviewListElement.setInnerNode(currNode.right());
+                nextNode.setLeft(null);
+            }
+            currNode = nextNode;
+            
+        }
+        
+    }
+
+    /**
+     * Gets the element from the movie list that a given node is part of.
+     * @param innerNode the given inner node
+     * @return the element of movieList that points to the inner node
+     */
+    private Node<String> getMoveListElement(InnerNode<String> innerNode) {
+        for (int i = 0; i < movieList.size(); i++) {
+            if (columnContains(innerNode, movieList.getObject(movieList.get(i)).getInnerNode())) {
+                return movieList.getObject(movieList.get(i));
+            }
+        }
+        return null;
+    }
+
+    
+    /**
+     * Gets the element from the review list that a given node is part of.
+     * @param innerNode the given inner node
+     * @return the element of reviewList that points to the inner node
+     */
+    private Node<String> getReviewListElement(InnerNode<String> innerNode) {
+        for (int i = 0; i < reviewList.size(); i++) {
+            if (rowContains(innerNode, reviewList.getObject(reviewList.get(i)).getInnerNode())) {
+                return reviewList.getObject(reviewList.get(i));
+            }
+        }
+        return null;
+    
 
     /**
      * Checks if an inner node is contained in an inner node column
