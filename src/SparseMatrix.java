@@ -85,7 +85,6 @@ public class SparseMatrix {
                             inner.setLeft(reviewRowIndexes.get(i).innerNode
                                 .left());
                         }
-
                         reviewRowIndexes.get(i).innerNode.setLeft(inner);
                         inner.setRight(reviewRowIndexes.get(i).innerNode);
                         addedToRow = true;
@@ -131,13 +130,11 @@ public class SparseMatrix {
                             inner.setTop(movieColumnIndexes.get(i).innerNode
                                 .top());
                         }
-
                         movieColumnIndexes.get(i).innerNode.setTop(inner);
                         inner.setBottom(movieColumnIndexes.get(i).innerNode);
                         addedToColumn = true;
                         break;
                     }
-
                 }
                 // case where new element is last in column
                 if (!addedToColumn) {

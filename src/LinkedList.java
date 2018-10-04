@@ -153,20 +153,15 @@ public class LinkedList<E> implements LList<E> {
 
         // account for matching head
         if (!isEmpty() && (obj.equals(current.getData()))) {
-            head = head.next();
+            head.setData(null);
             return true;
         }
 
         // account for 2+ size
         if (!isEmpty()) {
-            while (current.next() != null) {
-                if ((obj.equals(current.next().getData()))) {
-                    if (current.next().next() != null) {
-                        current.setNext(current.next().next());
-                    }
-                    else {
-                        current.setNext(null);
-                    }
+            while (current != null) {
+                if ((obj.equals(current.getData()))) {
+                    current.setData(null);
                     return true;
                 }
                 current = current.next();
@@ -376,6 +371,12 @@ public class LinkedList<E> implements LList<E> {
                 Node<E> current = head;
                 Node<E> otherCurrent = other.head;
                 while (current != null) {
+                    while(current.getData() == null) {
+                        current = current.next();
+                    }
+                    while(otherCurrent.getData() == null) {
+                        otherCurrent = otherCurrent.next();
+                    }
                     if (!current.getData().equals(otherCurrent.getData())) {
                         return false;
                     }

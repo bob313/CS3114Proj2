@@ -88,6 +88,28 @@ public class SparseMatrixTest extends TestCase {
 
     }
 
+    /**
+     *  tests teh delete
+     */
+    public void testdelete2() {
+        matrix = new SparseMatrix();
+        matrix.print();
+        matrix.listAdd("Dr. Shaffer<SEP>Spirited Away<SEP>10");
+        matrix.print();
+        assertEquals("10", matrix.getMovieList().getObject(matrix.getMovieList()
+            .get(0)).getInnerNode().getData());
+        matrix.listAdd("Dr. Shaffer<SEP>Another Movie<SEP>8");
+        matrix.print();
+        assertEquals("8", matrix.getMovieList().getObject(matrix.getMovieList()
+            .get(1)).getInnerNode().getData());
+        //matrix.delete("movie", "Spirited Away");
+        matrix.print();
+        assertNull(matrix.getMovieList().getObject(matrix.getMovieList().get(0)));
+        //matrix.delete("reviewer", "Dr. Shaffer");
+        matrix.print();
+        assertNull(matrix.getReviewList().getObject(matrix.getReviewList().get(0)));
+        assertNotNull(matrix.getMovieList().getObject(matrix.getMovieList().get(1)));
+    }
 
     /**
      * tests the empty case

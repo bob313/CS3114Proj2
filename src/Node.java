@@ -80,4 +80,14 @@ public class Node<D> {
     public D getData() {
         return data;
     }
+
+
+    /**
+     * 
+     * @param d
+     *            is what to set the data as
+     */
+    public void setData(D d) {
+        data = d;
+    }
 }

@@ -18,9 +18,9 @@ public class LinkedListTest extends TestCase {
     private LinkedList<String> emptyListB;
     private LinkedList<String> smallListA;
     private LinkedList<String> smallListB;
-    // private LinkedList<String> bigListA;
+    private LinkedList<String> bigListA;
     private LinkedList<String> bigListB;
-    // private String nullObject;
+    private String nullObject;
 
 
     /**
@@ -285,35 +285,40 @@ public class LinkedListTest extends TestCase {
         emptyListA.remove("3");
         emptyListA.remove("1");
         emptyListA.remove("2");
-        assertEquals("{}", emptyListA.toString());
+        assertEquals("{null, null, null}", emptyListA.toString());
         assertEquals("{soccer, swimming, gymnastics}", smallListA.toString());
     }
 
 
-// /**
-// * Tests the equals method on a list with a small number of items in it
-// */
-// public void testEqualsSmallList() {
-// assertEquals(smallListA, smallListA);
-// assertEquals(smallListA, smallListB);
-// assertFalse(smallListA.equals(nullObject));
-// assertFalse(smallListA.equals("soccer"));
-// assertFalse(smallListA.equals(bigListA));
-// assertFalse(smallListA.equals(emptyListA));
-// smallListB.add("jump roping");
-// assertFalse(smallListA.equals(smallListB));
-//
-// // Make smallListA and smallListB differ in
-// // content, but have the same size
-// smallListA.add("rope jumping");
-// assertFalse(smallListA.equals(smallListB));
-//
-// // Replace the last element in smallListA
-// // to make smallListA and smallListB equal again
-// smallListA.remove("rope jumping");
-// smallListA.add("jump roping");
-// assertEquals(smallListA, smallListB);
-// }
+    /**
+     * Tests the equals method on a list with a small number of items in it
+     */
+    public void testEqualsSmallList() {
+        assertEquals(smallListA, smallListA);
+        assertEquals(smallListA, smallListB);
+        assertFalse(smallListA.equals(nullObject));
+        assertFalse(smallListA.equals("soccer"));
+        assertFalse(smallListA.equals(bigListA));
+        assertFalse(smallListA.equals(emptyListA));
+        smallListB.add("rope jumping");
+        smallListB.remove("rope jumping");
+        smallListB.add("jump roping");
+        assertFalse(smallListA.equals(smallListB));
+
+        // Make smallListA and smallListB differ in
+        // content, but have the same size
+        smallListA.add("rope jumping");
+        assertFalse(smallListA.equals(smallListB));
+
+        // Replace the last element in smallListA
+        // to make smallListA and smallListB equal again
+        smallListA.remove("rope jumping");
+        smallListA.add("jump roping");
+        System.out.println(smallListA.toString());
+        System.out.println(smallListB.toString());
+        assertTrue(smallListA.equals(smallListB));
+    }
+
 
     /**
      * Tests the toString method on an empty list
