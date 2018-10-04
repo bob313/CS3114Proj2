@@ -17,4 +17,14 @@ public class CommandProcessorTest extends TestCase {
         assertNotNull(processor.getHash("movie"));
         assertNotNull(processor.getHash("review"));
     }
+
+
+    /**
+     * tests to make sure ratings are proper when adding
+     */
+    public void testadd() {
+        CommandProcessor processor = new CommandProcessor("6", "addrating.txt");
+        assertEquals(processor.getHash("movie").getCount(), 0);
+        assertEquals(processor.getHash("review").getCount(), 0);
+    }
 }

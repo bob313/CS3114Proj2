@@ -63,8 +63,9 @@ public class CommandProcessor {
         // Analyze the input string and figure out which command
         String[] inputs = commandString.trim().split("\\s+");
         if (inputs[0].equals("add")) {
-            add(commandString);
-            matrix.listAdd(commandString);
+            if (add(commandString)) {
+                matrix.listAdd(commandString);
+            }
             return true;
         }
         if (inputs[0].equals("delete")) {
@@ -123,11 +124,23 @@ public class CommandProcessor {
         for (int i = 2; i < base.length; i++) {
             name = name + " " + base[i].trim();
         }
+        Hash temp = reviewHash;
         if (base[0].equals("movie")) {
-            System.out.println("There is no movie similar to |" + name + "|");
+            temp = movieHash;
+        }
+        if (!temp.search(name)) {
+            if (base[0].equals("movie")) {
+                System.out.println("Movie |" + name
+                    + "| not found in the database.");
+            }
+            else {
+                System.out.println("Reviewer |" + name
+                    + "| not found in the database.");
+            }
         }
         else {
-            System.out.println("There is no reviewer similar to |" + "|");
+                System.out.println("There is no " + base[0] + " similar to |" + name
+                    + "|");
         }
     }
 
@@ -147,7 +160,7 @@ public class CommandProcessor {
             System.out.println("Reviewers:");
             reviewHash.print();
         }
-        else if (inputs[2].equals("movie")) {
+        else {
             System.out.println("Movies:");
             movieHash.print();
         }
@@ -159,8 +172,10 @@ public class CommandProcessor {
      * 
      * @param addCommand
      *            add command string
+     * @return
+     *         true if proper rating
      */
-    private void add(String addCommand) {
+    private boolean add(String addCommand) {
         String name = addCommand.replaceFirst("add", "");
         name = formatString(name);
         String[] key = name.split("<SEP>");
@@ -189,10 +204,12 @@ public class CommandProcessor {
             }
             System.out.println("Rating added: |" + key[0] + "|, |" + key[1]
                 + "|, " + key[2]);
+            return true;
         }
         else {
             System.out.println("Bad score |" + key[2]
                 + "|. Scores must be between 1 and 10.");
+            return false;
         }
     }
 
