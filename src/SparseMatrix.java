@@ -451,6 +451,46 @@ public class SparseMatrix {
 
 
     /**
+     * 
+     * @param listType
+     *            is which list to search through movie or reviewer
+     *
+     * @param name
+     *            is the name of the movie or reviewer to compare against
+     */
+    public void similarScore(String listType, String name) {
+        LinkedList<String> temp = reviewList;
+        int index = 0;
+        if (listType.equals("movie")) {
+            temp = movieList;
+        }
+        if (temp.getObject(name).getInnerNode() != null) {
+            int[] similar = similarity(listType, name);
+            int min = 10;
+            for (int i = 0; i < similar.length; i++) {
+                if (similar[i] < min) {
+                    min = similar[i];
+                    index = i;
+                }
+            }
+            if (min == 10) {
+                System.out.println("There is no " + listType + " similar to |"
+                    + name + "|");
+            }
+            else {
+                System.out.println("The " + listType + " |" + name
+                    + "| is similar to |" + temp.get(index) + "| with score "
+                    + min);
+            }
+        }
+        else {
+            System.out.println("There is no " + listType + " similar to |"
+                + name + "|");
+        }
+    }
+
+
+    /**
      * returns an array with similarity values
      * 
      * @param listType
@@ -463,7 +503,7 @@ public class SparseMatrix {
     public int[] similarity(String listType, String name) {
         LinkedList<String> temp = reviewList;
         if (listType.equals("movie")) {
-            temp = reviewList;
+            temp = movieList;
         }
         int[] similar = new int[temp.size()];
         int orig = temp.getIndex(name);

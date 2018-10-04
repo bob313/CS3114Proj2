@@ -139,9 +139,7 @@ public class CommandProcessor {
             }
         }
         else {
-            matrix.similarity(base[0], name);
-            System.out.println("There is no " + base[0] + " similar to |" + name
-                + "|");
+            matrix.similarScore(base[0], name);
         }
     }
 
