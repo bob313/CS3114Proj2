@@ -88,27 +88,83 @@ public class SparseMatrixTest extends TestCase {
 
     }
 
-    /**
-     *  tests teh delete
+        /**
+     * tests the deleteMovie method
      */
-    public void testdelete2() {
+    public void testdeleteMovie() {
+        // set up
+        System.out.println("Delete Begins");
         matrix = new SparseMatrix();
-        matrix.print();
-        matrix.listAdd("Dr. Shaffer<SEP>Spirited Away<SEP>10");
-        matrix.print();
-        assertEquals("10", matrix.getMovieList().getObject(matrix.getMovieList()
-            .get(0)).getInnerNode().getData());
+        matrix.listAdd("Dr. Shaffer<SEP>Spirited Away<SEP>7");
         matrix.listAdd("Dr. Shaffer<SEP>Another Movie<SEP>8");
+        matrix.listAdd("Christian<SEP>Spirited Away<SEP>2");
+        matrix.listAdd("Christian<SEP>Another Movie<SEP>4");
+        matrix.listAdd("Christian<SEP>Movie 3<SEP>6");
+        matrix.listAdd("Dr. Shaffer<SEP>This Project Sucks<SEP>10");
+        matrix.listAdd("Bob<SEP>Another Movie<SEP>5");
+        matrix.listAdd("Bob<SEP>Movie 3<SEP>9");
+        matrix.listAdd("Asshole<SEP>Spirited Away<SEP>2");
         matrix.print();
-        assertEquals("8", matrix.getMovieList().getObject(matrix.getMovieList()
-            .get(1)).getInnerNode().getData());
-        //matrix.delete("movie", "Spirited Away");
+
+        // testing
+        matrix.deleteMovie("Another Movie");
         matrix.print();
-        assertNull(matrix.getMovieList().getObject(matrix.getMovieList().get(0)));
-        //matrix.delete("reviewer", "Dr. Shaffer");
+        assertEquals("", matrix.getMovieList().get(1));
+        assertEquals(matrix.getMovieList().getObject(matrix.getMovieList().get(
+            2)).getInnerNode().getData(), matrix.getReviewList().getObject(
+                matrix.getReviewList().get(1)).getInnerNode().right()
+                .getData());
+
+        matrix.deleteMovie("This Project Sucks");
+        assertEquals("", matrix.getMovieList().get(3));
+        assertNull(matrix.getReviewList().getObject(matrix.getReviewList().get(
+            0)).getInnerNode().right());
+
+        matrix.deleteMovie("Spirited Away");
+        assertEquals("", matrix.getMovieList().get(0));
+        assertEquals(matrix.getMovieList().getObject(matrix.getMovieList().get(
+            2)).getInnerNode(), matrix.getReviewList().getObject(matrix
+                .getReviewList().get(1)).getInnerNode());
+
+        matrix.deleteReview("Dr. Shaffer");
+    }
+
+
+    /**
+     * Tests the deleteReview method
+     */
+    public void deleteReviewTest() {
+        // set up
+        System.out.println("Delete Begins");
+        matrix = new SparseMatrix();
+        matrix.listAdd("Dr. Shaffer<SEP>Spirited Away<SEP>7");
+        matrix.listAdd("Dr. Shaffer<SEP>Another Movie<SEP>8");
+        matrix.listAdd("Christian<SEP>Spirited Away<SEP>2");
+        matrix.listAdd("Christian<SEP>Another Movie<SEP>4");
+        matrix.listAdd("Christian<SEP>Movie 3<SEP>6");
+        matrix.listAdd("Dr. Shaffer<SEP>This Project Sucks<SEP>10");
+        matrix.listAdd("Bob<SEP>Another Movie<SEP>5");
+        matrix.listAdd("Bob<SEP>Movie 3<SEP>9");
+        matrix.listAdd("Asshole<SEP>Spirited Away<SEP>2");
         matrix.print();
-        assertNull(matrix.getReviewList().getObject(matrix.getReviewList().get(0)));
-        assertNotNull(matrix.getMovieList().getObject(matrix.getMovieList().get(1)));
+
+        // testing
+        matrix.deleteReview("Christian");
+        assertEquals("", matrix.getReviewList().get(1));
+        assertEquals(matrix.getReviewList().getObject(matrix.getReviewList()
+            .get(2)).getInnerNode(), matrix.getMovieList().getObject(matrix
+                .getMovieList().get(1)).getInnerNode().bottom());
+        matrix.deleteReview("Asshole");
+        assertEquals("", matrix.getReviewList().get(3));
+        assertNull(matrix.getMovieList().getObject(matrix.getMovieList().get(0))
+            .getInnerNode().bottom());
+        matrix.deleteReview("Dr. Shaffer");
+        assertEquals("", matrix.getReviewList().get(0));
+        assertEquals(matrix.getReviewList().getObject(matrix.getReviewList()
+            .get(2)).getInnerNode(), matrix.getMovieList().getObject(matrix
+                .getMovieList().get(1)).getInnerNode());
+        
+        matrix.deleteMovie("Spirited Away");
     }
 
     /**
