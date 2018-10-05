@@ -208,7 +208,6 @@ public class SparseMatrixTest extends TestCase {
         matrix.similarScore("reviewer", "Christian");
         matrix.similarScore("movie", "Spirited Away");
     }
-<<<<<<< HEAD
     
     public void testSimilarity2() {
         matrix = new SparseMatrix();
@@ -229,6 +228,4 @@ public class SparseMatrixTest extends TestCase {
         assertEquals("10", matrix.getMovieList().getObject(matrix.getMovieList()
             .get(2)).getInnerNode().getData());
     }
-=======
->>>>>>> d4f3e685bc87b2363f64704f6ee1084e09417473
 }

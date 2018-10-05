@@ -226,6 +226,12 @@ public class CommandProcessor {
         String[] key = name.split("<SEP>");
         boolean check = hash.remove(key[0]);
         if (check) {
+            if (str.equals("Movie")) {
+                matrix.deleteMovie(key[0].trim());
+            }
+            else {
+                matrix.deleteReview(key[0].trim());
+            }
             System.out.println("|" + key[0] + "| has been deleted from the "
                 + str + " database.");
         }

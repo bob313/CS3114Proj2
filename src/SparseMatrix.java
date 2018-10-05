@@ -18,7 +18,7 @@ public class SparseMatrix {
     public SparseMatrix() {
         movieList = new LinkedList<String>();
         reviewList = new LinkedList<String>();
-         highReviewIndex = 0;
+        highReviewIndex = 0;
         highMovieIndex = 0;
     }
 
@@ -37,13 +37,13 @@ public class SparseMatrix {
         key[2] = key[2].trim();
         if (!reviewList.contains(key[0])) {
             reviewList.add(key[0]);
-            highReviewIndex++;
             reviewList.getObject(key[0]).setIndex(highReviewIndex);
+            highReviewIndex++;
         }
         if (!movieList.contains(key[1])) {
             movieList.add(key[1]);
-            highMovieIndex++;
             movieList.getObject(key[1]).setIndex(highMovieIndex);
+            highMovieIndex++;
         }
         int reviewIndex = reviewList.getIndex(key[0]);
         InnerNode<String> reviewInner = reviewList.getObject(key[0])
@@ -398,37 +398,36 @@ public class SparseMatrix {
         if (emptiness()) {
             System.out.println("There are no ratings in the database");
         }
-
-        for (int i = 0; i < reviewList.size(); i++) {
-            if (reviewList.get(i) != null) {
-                System.out.println(reviewList.get(i) + ": " + reviewList
-                    .getObject(reviewList.get(i)).getIndex());
-            }
-        }
-        for (int i = 0; i < movieList.size(); i++) {
-            StringBuilder builder = new StringBuilder();
-            if (movieList.get(i) != null) {
-                builder.append(movieList.get(i));
-                builder.append(":");
-                InnerNode<String> curr = movieList.getObject(movieList.get(i))
-                    .getInnerNode();
-                while (curr != null) {
-                    for (int j = 0; j < reviewList.size(); j++) {
-                        if (rowContains(curr, reviewList.getObject(reviewList
-                            .get(j)).getInnerNode())) {
-                            builder.append(" " + j + ":");
-                            builder.append(curr.getData());
-                            break;
-                        }
-                    }
-                    curr = curr.bottom();
+        else {
+            for (int i = 0; i < reviewList.size(); i++) {
+                if (reviewList.get(i) != null) {
+                    System.out.println(reviewList.get(i) + ": " + reviewList
+                        .getObject(reviewList.get(i)).getIndex());
                 }
-
-                System.out.println(builder.toString());
             }
-
+            for (int i = 0; i < movieList.size(); i++) {
+                StringBuilder builder = new StringBuilder();
+                if (movieList.get(i) != null) {
+                    builder.append(movieList.get(i));
+                    builder.append(":");
+                    InnerNode<String> curr = movieList.getObject(movieList.get(
+                        i)).getInnerNode();
+                    while (curr != null) {
+                        for (int j = 0; j < reviewList.size(); j++) {
+                            if (rowContains(curr, reviewList.getObject(
+                                reviewList.get(j)).getInnerNode())) {
+                                builder.append(" " + j + ":");
+                                builder.append(curr.getData());
+                                break;
+                            }
+                        }
+                        curr = curr.bottom();
+                    }
+                    builder.append(" ");
+                    System.out.println(builder.toString());
+                }
+            }
         }
-
     }
 
 
@@ -517,8 +516,8 @@ public class SparseMatrix {
             }
             else {
                 System.out.println("The " + listType + " |" + temp.get(index)
-                    + "| is similar to |" + name + "| with score "
-                    + String.format("%.2f", min));
+                    + "| is similar to |" + name + "| with score " + String
+                        .format("%.2f", min));
             }
         }
         else {
