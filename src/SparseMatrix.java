@@ -506,9 +506,9 @@ public class SparseMatrix {
                     + name + "|");
             }
             else {
-                System.out.println("The " + listType + " |" + name
-                    + "| is similar to |" + temp.get(index) + "| with score "
-                    + min);
+                System.out.println("The " + listType + " |" + temp.get(index)
+                    + "| is similar to |" + name + "| with score "
+                    + String.format("%.2f", min));
             }
         }
         else {
@@ -592,7 +592,7 @@ public class SparseMatrix {
         if (count == 0) {
             return 10;
         }
-        return (double)Math.round((sum / count) * 100) / 100;
+        return (sum / count);
     }
 
 
@@ -636,7 +636,7 @@ public class SparseMatrix {
         if (count == 0) {
             return 10;
         }
-        return (double)Math.round((sum / count) * 100) / 100;
+        return (sum / count);
     }
 
 

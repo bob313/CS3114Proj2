@@ -219,7 +219,11 @@ public class SparseMatrixTest extends TestCase {
         matrix.listAdd("Christian<SEP>Death<SEP>2");
         matrix.listAdd("Dr. Shaffer<SEP>Death<SEP>1");
         matrix.listAdd("Bob<SEP>LIFE<SEP>10");
-        matrix.similarScore("movie", "Death");
+        matrix.listAdd("Dr. Shaffer<SEP>Another Movie<SEP>4");
+        matrix.listAdd("Bob<SEP>Another Movie<SEP>5");
+        matrix.listAdd("Dr. Shaffer<SEP>Movie 3<SEP>6");
+        matrix.listAdd("Bob<SEP>Movie 3<SEP>9");
+        matrix.similarScore("movie", "Spirited Away");
         assertEquals("10", matrix.getMovieList().getObject(matrix.getMovieList()
             .get(2)).getInnerNode().getData());
     }
