@@ -178,8 +178,7 @@ public class SparseMatrix {
             currNode = currNode.right();
 
         }
-        InnerNode<String> holder = new InnerNode<String>("");
-        reviewList.getObject(rowName).setInnerNode(holder);
+        reviewList.getObject(rowName).setInnerNode(null);
         reviewList.getObject(rowName).setData("");
     }
 
@@ -213,8 +212,7 @@ public class SparseMatrix {
             currNode = currNode.bottom();
 
         }
-        InnerNode<String> holder = new InnerNode<String>("");
-        movieList.getObject(movieName).setInnerNode(holder);
+        movieList.getObject(movieName).setInnerNode(null);
         movieList.getObject(movieName).setData("");
 
     }
