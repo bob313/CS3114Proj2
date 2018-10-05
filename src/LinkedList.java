@@ -153,15 +153,22 @@ public class LinkedList<E> implements LList<E> {
 
         // account for matching head
         if (!isEmpty() && (obj.equals(current.getData()))) {
-            head.setData(null);
+            head = head.next();
+            size--;
             return true;
         }
 
         // account for 2+ size
         if (!isEmpty()) {
-            while (current != null) {
-                if ((obj.equals(current.getData()))) {
-                    current.setData(null);
+            while (current.next() != null) {
+                if ((obj.equals(current.next().getData()))) {
+                    if (current.next().next() != null) {
+                        current.setNext(current.next().next());
+                    }
+                    else {
+                        current.setNext(null);
+                    }
+                    size--;
                     return true;
                 }
                 current = current.next();
@@ -218,7 +225,6 @@ public class LinkedList<E> implements LList<E> {
      * @param obj
      *            Object is the string to search for in the list
      * @return
-     *         return the node where the object is located
      */
     public Node<E> getObject(E obj) {
         Node<E> current = head;
@@ -371,12 +377,6 @@ public class LinkedList<E> implements LList<E> {
                 Node<E> current = head;
                 Node<E> otherCurrent = other.head;
                 while (current != null) {
-                    while (current.getData() == null) {
-                        current = current.next();
-                    }
-                    while (otherCurrent.getData() == null) {
-                        otherCurrent = otherCurrent.next();
-                    }
                     if (!current.getData().equals(otherCurrent.getData())) {
                         return false;
                     }
