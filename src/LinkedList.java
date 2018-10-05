@@ -371,10 +371,10 @@ public class LinkedList<E> implements LList<E> {
                 Node<E> current = head;
                 Node<E> otherCurrent = other.head;
                 while (current != null) {
-                    while(current.getData() == null) {
+                    while (current.getData() == null) {
                         current = current.next();
                     }
-                    while(otherCurrent.getData() == null) {
+                    while (otherCurrent.getData() == null) {
                         otherCurrent = otherCurrent.next();
                     }
                     if (!current.getData().equals(otherCurrent.getData())) {

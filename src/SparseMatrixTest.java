@@ -133,7 +133,7 @@ public class SparseMatrixTest extends TestCase {
     /**
      * Tests the deleteReview method
      */
-    public void deleteReviewTest() {
+    public void testdeleteReview() {
         // set up
         System.out.println("Delete Begins");
         matrix = new SparseMatrix();
@@ -175,9 +175,15 @@ public class SparseMatrixTest extends TestCase {
         matrix.print();
         matrix.list("movie", "name");
         matrix.listAdd("Dr. Shaffer<SEP>Spirited Away<SEP>10");
+        matrix.deleteReview("Dr. Shaffer");
         matrix.print();
-        assertEquals("10", matrix.getMovieList().getObject(matrix.getMovieList()
-            .get(0)).getInnerNode().getData());
+        assertNull(matrix.getMovieList().getObject(matrix.getMovieList()
+            .get(0)));
+        matrix.listAdd("Christian<SEP>Spirited Away<SEP>2");
+        matrix.deleteMovie("Spirited Away");
+        matrix.print();
+        assertNull(matrix.getMovieList().getObject(matrix.getMovieList()
+            .get(0)));
     }
     
     public void testSimilarity() {

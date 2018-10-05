@@ -150,7 +150,9 @@ public class SparseMatrix {
 
     /**
      * Deletes a review row from the sparse matrix
-     * @param rowName the row to be deleted
+     * 
+     * @param rowName
+     *            the row to be deleted
      */
     public void deleteReview(String rowName) {
         InnerNode<String> currNode = null;
@@ -174,16 +176,19 @@ public class SparseMatrix {
                 }
             }
             currNode = currNode.right();
-            
+
         }
         InnerNode<String> holder = new InnerNode<String>("");
         reviewList.getObject(rowName).setInnerNode(holder);
         reviewList.getObject(rowName).setData("");
     }
-    
+
+
     /**
      * Deletes a movie column from the sparse Matrix
-     * @param movieName the movie to be deleted
+     * 
+     * @param movieName
+     *            the movie to be deleted
      */
     public void deleteMovie(String movieName) {
         InnerNode<String> currNode = null;
@@ -203,41 +208,47 @@ public class SparseMatrix {
                 if (currNode.right() != null) {
                     currNode.right().setLeft(null);
                 }
-                
-                
+
             }
             currNode = currNode.bottom();
-            
+
         }
         InnerNode<String> holder = new InnerNode<String>("");
         movieList.getObject(movieName).setInnerNode(holder);
         movieList.getObject(movieName).setData("");
-        
+
     }
+
 
     /**
      * Gets the element from the movie list that a given node is part of.
-     * @param innerNode the given inner node
+     * 
+     * @param innerNode
+     *            the given inner node
      * @return the element of movieList that points to the inner node
      */
     private Node<String> getMoveListElement(InnerNode<String> innerNode) {
         for (int i = 0; i < movieList.size(); i++) {
-            if (columnContains(innerNode, movieList.getObject(movieList.get(i)).getInnerNode())) {
+            if (columnContains(innerNode, movieList.getObject(movieList.get(i))
+                .getInnerNode())) {
                 return movieList.getObject(movieList.get(i));
             }
         }
         return null;
     }
 
-    
+
     /**
      * Gets the element from the review list that a given node is part of.
-     * @param innerNode the given inner node
+     * 
+     * @param innerNode
+     *            the given inner node
      * @return the element of reviewList that points to the inner node
      */
     private Node<String> getReviewListElement(InnerNode<String> innerNode) {
         for (int i = 0; i < reviewList.size(); i++) {
-            if (rowContains(innerNode, reviewList.getObject(reviewList.get(i)).getInnerNode())) {
+            if (rowContains(innerNode, reviewList.getObject(reviewList.get(i))
+                .getInnerNode())) {
                 return reviewList.getObject(reviewList.get(i));
             }
         }
@@ -356,8 +367,16 @@ public class SparseMatrix {
      */
     private boolean emptiness() {
         int i = 0;
-        while (movieList.get(i) != null) {
+        while (i < movieList.size()) {
             if (movieList.getObject(movieList.get(i)).getInnerNode() != null) {
+                return false;
+            }
+            i++;
+        }
+        i = 0;
+        while (i < reviewList.size()) {
+            if (reviewList.getObject(reviewList.get(i))
+                .getInnerNode() != null) {
                 return false;
             }
             i++;
@@ -370,26 +389,26 @@ public class SparseMatrix {
      * Prints the contents of the sparse matrix
      */
     public void print() {
-        if (movieList.isEmpty() || reviewList.isEmpty()) {
+        if (emptiness()) {
             System.out.println("There are no ratings in the database");
         }
 
         for (int i = 0; i < reviewList.size(); i++) {
-            if (reviewList.get(i) != "") {
+            if (!reviewList.get(i).equals("")) {
                 System.out.println(reviewList.get(i) + ": " + i);
             }
         }
         for (int i = 0; i < movieList.size(); i++) {
             StringBuilder builder = new StringBuilder();
-            if (movieList.get(i) != "") {
+            if (!movieList.get(i).equals("")) {
                 builder.append(movieList.get(i));
                 builder.append(":");
                 InnerNode<String> curr = movieList.getObject(movieList.get(i))
                     .getInnerNode();
                 while (curr != null) {
                     for (int j = 0; j < reviewList.size(); j++) {
-                        if (rowContains(curr, reviewList.getObject(reviewList.get(
-                            j)).getInnerNode())) {
+                        if (rowContains(curr, reviewList.getObject(reviewList
+                            .get(j)).getInnerNode())) {
                             builder.append(" " + j + ":");
                             builder.append(curr.getData());
                             break;
@@ -400,7 +419,7 @@ public class SparseMatrix {
 
                 System.out.println(builder.toString());
             }
-            
+
         }
 
     }
