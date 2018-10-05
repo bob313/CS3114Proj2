@@ -177,13 +177,13 @@ public class SparseMatrixTest extends TestCase {
         matrix.listAdd("Dr. Shaffer<SEP>Spirited Away<SEP>10");
         matrix.deleteReview("Dr. Shaffer");
         matrix.print();
-        assertNull(matrix.getMovieList().getObject(matrix.getMovieList()
-            .get(0)));
+        assertNull(matrix.getReviewList().getObject(matrix.getReviewList()
+            .get(0)).getInnerNode());
         matrix.listAdd("Christian<SEP>Spirited Away<SEP>2");
         matrix.deleteMovie("Spirited Away");
         matrix.print();
         assertNull(matrix.getMovieList().getObject(matrix.getMovieList()
-            .get(0)));
+            .get(0)).getInnerNode());
     }
     
     public void testSimilarity() {
@@ -206,5 +206,21 @@ public class SparseMatrixTest extends TestCase {
         matrix.listAdd("Bob<SEP>Another Movie<SEP>5");
         matrix.similarScore("reviewer", "Christian");
         matrix.similarScore("movie", "Spirited Away");
+    }
+    
+    public void testSimilarity2() {
+        matrix = new SparseMatrix();
+        matrix.listAdd("Dr. Shaffer<SEP>Spirited Away<SEP>10");
+        assertEquals("10", matrix.getMovieList().getObject(matrix.getMovieList()
+            .get(0)).getInnerNode().getData());
+        matrix.listAdd("Christian<SEP>Spirited Away<SEP>1");
+        matrix.listAdd("Bob<SEP>Spirited Away<SEP>1");
+        matrix.listAdd("Bob<SEP>Death<SEP>1");
+        matrix.listAdd("Christian<SEP>Death<SEP>2");
+        matrix.listAdd("Dr. Shaffer<SEP>Death<SEP>1");
+        matrix.listAdd("Bob<SEP>LIFE<SEP>10");
+        matrix.similarScore("movie", "Death");
+        assertEquals("10", matrix.getMovieList().getObject(matrix.getMovieList()
+            .get(2)).getInnerNode().getData());
     }
 }

@@ -390,36 +390,35 @@ public class SparseMatrix {
         if (emptiness()) {
             System.out.println("There are no ratings in the database");
         }
-
-        for (int i = 0; i < reviewList.size(); i++) {
-            if (!reviewList.get(i).equals("")) {
-                System.out.println(reviewList.get(i) + ": " + i);
-            }
-        }
-        for (int i = 0; i < movieList.size(); i++) {
-            StringBuilder builder = new StringBuilder();
-            if (!movieList.get(i).equals("")) {
-                builder.append(movieList.get(i));
-                builder.append(":");
-                InnerNode<String> curr = movieList.getObject(movieList.get(i))
-                    .getInnerNode();
-                while (curr != null) {
-                    for (int j = 0; j < reviewList.size(); j++) {
-                        if (rowContains(curr, reviewList.getObject(reviewList
-                            .get(j)).getInnerNode())) {
-                            builder.append(" " + j + ":");
-                            builder.append(curr.getData());
-                            break;
-                        }
-                    }
-                    curr = curr.bottom();
+        else {
+            for (int i = 0; i < reviewList.size(); i++) {
+                if (!reviewList.get(i).equals("")) {
+                    System.out.println(reviewList.get(i) + ": " + i);
                 }
-
-                System.out.println(builder.toString());
             }
+            for (int i = 0; i < movieList.size(); i++) {
+                StringBuilder builder = new StringBuilder();
+                if (!movieList.get(i).equals("")) {
+                    builder.append(movieList.get(i));
+                    builder.append(":");
+                    InnerNode<String> curr = movieList.getObject(movieList.get(
+                        i)).getInnerNode();
+                    while (curr != null) {
+                        for (int j = 0; j < reviewList.size(); j++) {
+                            if (rowContains(curr, reviewList.getObject(
+                                reviewList.get(j)).getInnerNode())) {
+                                builder.append(" " + j + ":");
+                                builder.append(curr.getData());
+                                break;
+                            }
+                        }
+                        curr = curr.bottom();
+                    }
 
+                    System.out.println(builder.toString());
+                }
+            }
         }
-
     }
 
 
@@ -494,8 +493,8 @@ public class SparseMatrix {
             temp = movieList;
         }
         if (temp.getObject(name).getInnerNode() != null) {
-            int[] similar = similarity(listType, name);
-            int min = 10;
+            double[] similar = similarity(listType, name);
+            double min = 10;
             for (int i = 0; i < similar.length; i++) {
                 if (similar[i] < min) {
                     min = similar[i];
@@ -529,12 +528,12 @@ public class SparseMatrix {
      * @return
      *         the similarity array
      */
-    public int[] similarity(String listType, String name) {
+    public double[] similarity(String listType, String name) {
         LinkedList<String> temp = reviewList;
         if (listType.equals("movie")) {
             temp = movieList;
         }
-        int[] similar = new int[temp.size()];
+        double[] similar = new double[temp.size()];
         int orig = temp.getIndex(name);
         for (int i = 0; i < similar.length; i++) {
             if (temp.get(i).equals(name)) {
@@ -562,23 +561,17 @@ public class SparseMatrix {
      * @return
      *         the similarity score between two movies
      */
-    private int movieDiff(int orig, int compare) {
+    private double movieDiff(int orig, int compare) {
         int i = 0;
-        int sum = 0;
-        int count = 0;
+        double sum = 0;
+        double count = 0;
         InnerNode<String> origCounter = movieList.getObject(movieList.get(orig))
             .getInnerNode();
         InnerNode<String> compCounter = movieList.getObject(movieList.get(
             compare)).getInnerNode();
         while (compCounter != null && origCounter != null) {
-            if (!rowContains(origCounter, reviewList.getObject(reviewList.get(
-                i)).getInnerNode()) && !rowContains(compCounter, reviewList
-                    .getObject(reviewList.get(i)).getInnerNode())) {
-                origCounter = origCounter.bottom();
-                compCounter = compCounter.bottom();
-            }
-            else if (rowContains(origCounter, reviewList.getObject(reviewList
-                .get(i)).getInnerNode()) && rowContains(compCounter, reviewList
+            if (rowContains(origCounter, reviewList.getObject(reviewList.get(i))
+                .getInnerNode()) && rowContains(compCounter, reviewList
                     .getObject(reviewList.get(i)).getInnerNode())) {
                 sum += Math.abs(Integer.valueOf(origCounter.getData()) - Integer
                     .valueOf(compCounter.getData()));
@@ -590,7 +583,8 @@ public class SparseMatrix {
                 .get(i)).getInnerNode())) {
                 compCounter = compCounter.bottom();
             }
-            else {
+            else if (rowContains(origCounter, reviewList.getObject(reviewList
+                .get(i)).getInnerNode())) {
                 origCounter = origCounter.bottom();
             }
             i++;
@@ -598,7 +592,7 @@ public class SparseMatrix {
         if (count == 0) {
             return 10;
         }
-        return sum / count;
+        return (double)Math.round((sum / count) * 100) / 100;
     }
 
 
@@ -611,24 +605,18 @@ public class SparseMatrix {
      * @return
      *         the similarity score between two movies
      */
-    private int reviewDiff(int orig, int compare) {
+    private double reviewDiff(int orig, int compare) {
         int i = 0;
-        int sum = 0;
-        int count = 0;
+        double sum = 0;
+        double count = 0;
         InnerNode<String> origCounter = reviewList.getObject(reviewList.get(
             orig)).getInnerNode();
         InnerNode<String> compCounter = reviewList.getObject(reviewList.get(
             compare)).getInnerNode();
         while (compCounter != null && origCounter != null) {
-            if (!columnContains(origCounter, movieList.getObject(movieList.get(
-                i)).getInnerNode()) && !columnContains(compCounter, movieList
+            if (columnContains(origCounter, movieList.getObject(movieList.get(
+                i)).getInnerNode()) && columnContains(compCounter, movieList
                     .getObject(movieList.get(i)).getInnerNode())) {
-                origCounter = origCounter.right();
-                compCounter = compCounter.right();
-            }
-            else if (columnContains(origCounter, movieList.getObject(movieList
-                .get(i)).getInnerNode()) && columnContains(compCounter,
-                    movieList.getObject(movieList.get(i)).getInnerNode())) {
                 count++;
                 sum += Math.abs(Integer.valueOf(origCounter.getData()) - Integer
                     .valueOf(compCounter.getData()));
@@ -639,7 +627,8 @@ public class SparseMatrix {
                 .get(i)).getInnerNode())) {
                 compCounter = compCounter.right();
             }
-            else {
+            else if (columnContains(origCounter, movieList.getObject(movieList
+                .get(i)).getInnerNode())) {
                 origCounter = origCounter.right();
             }
             i++;
@@ -647,7 +636,7 @@ public class SparseMatrix {
         if (count == 0) {
             return 10;
         }
-        return sum / count;
+        return (double)Math.round((sum / count) * 100) / 100;
     }
 
 
