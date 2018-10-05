@@ -395,42 +395,43 @@ public class SparseMatrix {
      * Prints the contents of the sparse matrix
      */
     public void print() {
-        if (emptiness()) {
+        if (movieList.isEmpty() && reviewList.isEmpty()) {
             System.out.println("There are no ratings in the database");
         }
-
-        for (int i = 0; i < reviewList.size(); i++) {
-            if (reviewList.get(i) != null) {
-                System.out.println(reviewList.get(i) + ": " + reviewList
-                    .getObject(reviewList.get(i)).getIndex());
+        else {
+            for (int i = 0; i < reviewList.size(); i++) {
+                if (reviewList.get(i) != null) {
+                    System.out.println(reviewList.get(i) + ": " + reviewList
+                        .getObject(reviewList.get(i)).getIndex());
+                }
             }
-        }
-        for (int i = 0; i < movieList.size(); i++) {
-            StringBuilder builder = new StringBuilder();
-            if (movieList.get(i) != null) {
-                builder.append(movieList.get(i));
-                builder.append(":");
-                InnerNode<String> curr = movieList.getObject(movieList.get(i))
-                    .getInnerNode();
-                while (curr != null) {
-                    for (int j = 0; j < reviewList.size(); j++) {
-                        if (rowContains(curr, reviewList.getObject(reviewList
-                            .get(j)).getInnerNode())) {
-                            builder.append(" " + reviewList
-                                .getObject(reviewList.get(j)).getIndex() + ":");
-                            builder.append(curr.getData());
-                            break;
+            for (int i = 0; i < movieList.size(); i++) {
+                StringBuilder builder = new StringBuilder();
+                if (movieList.get(i) != null) {
+                    builder.append(movieList.get(i));
+                    builder.append(":");
+                    InnerNode<String> curr = movieList.getObject(movieList.get(
+                        i)).getInnerNode();
+                    while (curr != null) {
+                        for (int j = 0; j < reviewList.size(); j++) {
+                            if (rowContains(curr, reviewList.getObject(
+                                reviewList.get(j)).getInnerNode())) {
+                                builder.append(" " + reviewList.getObject(
+                                    reviewList.get(j)).getIndex() + ":");
+                                builder.append(curr.getData());
+                                break;
+                            }
                         }
+                        curr = curr.bottom();
                     }
-                    curr = curr.bottom();
+
+                    System.out.println(builder.toString());
                 }
 
-                System.out.println(builder.toString());
             }
-
         }
-
     }
+
 
     /**
      * 
