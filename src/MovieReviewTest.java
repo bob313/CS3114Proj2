@@ -12,6 +12,7 @@ public class MovieReviewTest extends TestCase {
         // Nothing Here
     }
 
+
     /**
      * Get code coverage of the class declaration.
      */
@@ -19,5 +20,7 @@ public class MovieReviewTest extends TestCase {
         MovieReview recstore = new MovieReview();
         assertNotNull(recstore);
         MovieReview.main(null);
+        String[] dum = { "23" };
+        MovieReview.main(dum);
     }
 }

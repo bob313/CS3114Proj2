@@ -225,6 +225,7 @@ public class LinkedList<E> implements LList<E> {
      * @param obj
      *            Object is the string to search for in the list
      * @return
+     *         returns the linked node
      */
     public Node<E> getObject(E obj) {
         Node<E> current = head;

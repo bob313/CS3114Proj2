@@ -87,8 +87,26 @@ public class SparseMatrixTest extends TestCase {
         // testing print
 
     }
+    
+    /**
+     * tests for spaces
+     */
+    public void test4() {
+        matrix = new SparseMatrix();
+        matrix.listAdd("Rock<SEP>weeb<SEP>4");
+        matrix.listAdd(" Rock<SEP>movie<SEP> 4");
+        matrix.listAdd("noob<SEP>   Anime<SEP> 4");
+        matrix.listAdd("    bob<SEP>chicken <SEP>     4");
+        matrix.listAdd("bob<SEP>tie <SEP> 4   ");
+        matrix.listAdd("Roc <SEP>Anime   <SEP> 4  ");
+        matrix.listAdd("Rock<SEP>Anime<SEP> 4");
+        matrix.print();
+        assertEquals("4", matrix.getMovieList().getObject(matrix.getMovieList()
+            .get(0)).getInnerNode().getData());
+    }
 
-        /**
+
+    /**
      * tests the deleteMovie method
      */
     public void testdeleteMovie() {
@@ -152,19 +170,20 @@ public class SparseMatrixTest extends TestCase {
         // testing
         matrix.deleteReview("Christian");
         assertFalse(matrix.getReviewList().contains("Christian"));
-        assertEquals("5", matrix.getMovieList().getObject(matrix
-                .getMovieList().get(1)).getInnerNode().bottom().getData());
+        assertEquals("5", matrix.getMovieList().getObject(matrix.getMovieList()
+            .get(1)).getInnerNode().bottom().getData());
         matrix.deleteReview("Asshole");
         assertFalse(matrix.getReviewList().contains("Asshole"));
         assertNull(matrix.getMovieList().getObject(matrix.getMovieList().get(0))
             .getInnerNode().bottom());
         matrix.deleteReview("Dr. Shaffer");
         assertFalse(matrix.getReviewList().contains("Dr. Shaffer"));
-        assertEquals("5", matrix.getMovieList().getObject(matrix
-                .getMovieList().get(1)).getInnerNode().getData());
-        
+        assertEquals("5", matrix.getMovieList().getObject(matrix.getMovieList()
+            .get(1)).getInnerNode().getData());
+
         matrix.deleteMovie("Spirited Away");
     }
+
 
     /**
      * tests the empty case
@@ -176,17 +195,21 @@ public class SparseMatrixTest extends TestCase {
         matrix.listAdd("Dr. Shaffer<SEP>Spirited Away<SEP>10");
         matrix.deleteReview("Dr. Shaffer");
         matrix.print();
-        assertNull(matrix.getMovieList().getObject(matrix.getMovieList()
-            .get(0)).getInnerNode());
+        assertNull(matrix.getMovieList().getObject(matrix.getMovieList().get(0))
+            .getInnerNode());
         assertTrue(matrix.getReviewList().isEmpty());
         matrix.listAdd("Christian<SEP>Spirited Away<SEP>2");
         matrix.deleteMovie("Spirited Away");
         matrix.print();
-        assertNull(matrix.getReviewList().getObject(matrix.getReviewList()
-            .get(0)).getInnerNode());
+        assertNull(matrix.getReviewList().getObject(matrix.getReviewList().get(
+            0)).getInnerNode());
         assertTrue(matrix.getMovieList().isEmpty());
     }
-    
+
+
+    /**
+     * tests the similarity
+     */
     public void testSimilarity() {
         matrix = new SparseMatrix();
         matrix.print();
@@ -208,7 +231,11 @@ public class SparseMatrixTest extends TestCase {
         matrix.similarScore("reviewer", "Christian");
         matrix.similarScore("movie", "Spirited Away");
     }
-    
+
+
+    /**
+     * tests more for similarity
+     */
     public void testSimilarity2() {
         matrix = new SparseMatrix();
         matrix.listAdd("Dr. Shaffer<SEP>Spirited Away<SEP>10");

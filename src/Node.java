@@ -13,7 +13,7 @@ public class Node<D> {
 
     // The data element stored in the node.
     private D data;
-    
+
     private int index;
 
     // The next node in the sequence.
@@ -92,17 +92,24 @@ public class Node<D> {
     public void setData(D d) {
         data = d;
     }
-    
+
+
     /**
      * Gets the index value of the node
+     * 
+     * @return
+     *         the index
      */
     public int getIndex() {
         return index;
     }
-    
+
+
     /**
      * sets the Index value
-     * @param newIndex the new index value
+     * 
+     * @param newIndex
+     *            the new index value
      */
     public void setIndex(int newIndex) {
         index = newIndex;

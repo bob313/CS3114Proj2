@@ -180,6 +180,7 @@ public class CommandProcessor {
         String[] key = name.split("<SEP>");
         boolean mcheck = movieHash.search(key[1].trim());
         boolean rcheck = reviewHash.search(key[0].trim());
+        key[2] = key[2].trim();
         if (Integer.valueOf(key[2]) > 0 && Integer.valueOf(key[2]) < 11) {
             if (!rcheck) {
                 Handle rhandle = new Handle(10, 19, key[0].trim());
@@ -278,10 +279,9 @@ public class CommandProcessor {
         if (name.equals("movie")) {
             return movieHash;
         }
-        else if (name.equals("review")) {
+        else {
             return reviewHash;
         }
-        return null;
     }
 
 }

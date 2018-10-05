@@ -181,15 +181,15 @@ public class LinkedListTest extends TestCase {
      */
     public void testremove() {
         assertTrue(smallListA.remove("soccer"));
-        assertEquals(smallListA.size(), 3);
+        assertEquals(smallListA.size(), 2);
         assertFalse(smallListA.remove("aple"));
-        assertEquals(smallListA.size(), 3);
+        assertEquals(smallListA.size(), 2);
         smallListA.add("hi");
         smallListA.add("die");
         smallListA.remove("hi");
-        assertEquals(smallListA.size(), 5);
+        assertEquals(smallListA.size(), 3);
         assertTrue(smallListA.remove("gymnastics"));
-        assertEquals(smallListA.size(), 5);
+        assertEquals(smallListA.size(), 2);
         assertTrue(smallListA.remove("die"));
         assertTrue(smallListA.remove("swimming"));
         assertFalse(smallListA.remove("ha"));
@@ -286,7 +286,7 @@ public class LinkedListTest extends TestCase {
         emptyListA.remove("3");
         emptyListA.remove("1");
         emptyListA.remove("2");
-        assertEquals("{null, null, null}", emptyListA.toString());
+        assertEquals("{}", emptyListA.toString());
         assertEquals("{soccer, swimming, gymnastics}", smallListA.toString());
     }
 
