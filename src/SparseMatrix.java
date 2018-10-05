@@ -8,6 +8,8 @@ public class SparseMatrix {
 
     private LinkedList<String> movieList;
     private LinkedList<String> reviewList;
+    private int highReviewIndex;
+    private int highMovieIndex;
 
 
     /**
@@ -16,6 +18,8 @@ public class SparseMatrix {
     public SparseMatrix() {
         movieList = new LinkedList<String>();
         reviewList = new LinkedList<String>();
+         highReviewIndex = 0;
+        highMovieIndex = 0;
     }
 
 
