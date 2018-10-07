@@ -7,11 +7,11 @@
  */
 public class AddListElement {
     /**
-     * Index for list
+     * The index of the node in its list
      */
     public int index;
     /**
-     * Innernode for list
+     * The InnerNode that the node points to in the matrix
      */
     public InnerNode<String> innerNode;
 
