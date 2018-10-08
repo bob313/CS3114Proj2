@@ -184,13 +184,13 @@ public class SparseMatrix {
     /**
      * adds a new node to the correct row
      * 
-     * @param reviewRowIndexes
+     * @param movieColumnIndexes
      *            the list of row indices
-     * @param movieIndex
+     * @param reviewIndex
      *            the index of the correct movie column
      * @param inner
      *            the new node being added in
-     * @param reviewRow
+     * @param movieColumn
      *            the review of the new node
      */
     private void addToRow(

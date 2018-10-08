@@ -9,11 +9,11 @@ public class AddListElement {
     /**
      * The index of the node in its list
      */
-    public int index;
+    public static int index;
     /**
      * The InnerNode that the node points to in the matrix
      */
-    public InnerNode<String> innerNode;
+    public static InnerNode<String> innerNode;
 
 
     /**
