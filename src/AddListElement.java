@@ -6,14 +6,10 @@
  *
  */
 public class AddListElement {
-    /**
-     * The index of the node in its list
-     */
-    public int index;
-    /**
-     * The InnerNode that the node points to in the matrix
-     */
-    public InnerNode<String> innerNode;
+    
+    private int index;
+    
+    private InnerNode<String> innerNode;
 
 
     /**
@@ -26,6 +22,22 @@ public class AddListElement {
     public AddListElement(int ind, InnerNode<String> node) {
         index = ind;
         innerNode = node;
+    }
+    
+    /**
+     * Gets the index of the element
+     * @return the index
+     */
+    public int getIndex() {
+        return index;
+    }
+    
+    /**
+     * Gets the inner node
+     * @return the inner node
+     */
+    public InnerNode<String> getInnerNode() {
+        return innerNode;
     }
 
 }
