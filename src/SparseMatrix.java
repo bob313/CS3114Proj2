@@ -129,28 +129,28 @@ public class SparseMatrix {
         else {
             boolean addedToRow = false;
             for (int i = 0; i < reviewRowIndexes.size(); i++) {
-                if (reviewRowIndexes.get(i).index > movieIndex) {
+                if (reviewRowIndexes.get(i).getIndex() > movieIndex) {
                     // case where new element is first in row
-                    if (reviewRowIndexes.get(i).innerNode.left() == null) {
+                    if (reviewRowIndexes.get(i).getInnerNode().left() == null) {
                         reviewList.getObject(reviewRow).setInnerNode(inner);
                     }
                     else {
-                        reviewRowIndexes.get(i).innerNode.left().setRight(
+                        reviewRowIndexes.get(i).getInnerNode().left().setRight(
                             inner);
-                        inner.setLeft(reviewRowIndexes.get(i).innerNode.left());
+                        inner.setLeft(reviewRowIndexes.get(i).getInnerNode().left());
                     }
-                    reviewRowIndexes.get(i).innerNode.setLeft(inner);
-                    inner.setRight(reviewRowIndexes.get(i).innerNode);
+                    reviewRowIndexes.get(i).getInnerNode().setLeft(inner);
+                    inner.setRight(reviewRowIndexes.get(i).getInnerNode());
                     addedToRow = true;
                     break;
                 }
             }
             // case where new element is last in row
             if (!addedToRow) {
-                reviewRowIndexes.get(reviewRowIndexes.size() - 1).innerNode
+                reviewRowIndexes.get(reviewRowIndexes.size() - 1).getInnerNode()
                     .setRight(inner);
                 inner.setLeft(reviewRowIndexes.get(reviewRowIndexes.size()
-                    - 1).innerNode);
+                    - 1).getInnerNode());
             }
         }
     }
@@ -205,28 +205,28 @@ public class SparseMatrix {
         else {
             boolean addedToColumn = false;
             for (int i = 0; i < movieColumnIndexes.size(); i++) {
-                if (movieColumnIndexes.get(i).index > reviewIndex) {
+                if (movieColumnIndexes.get(i).getIndex() > reviewIndex) {
                     // case where new element is first in column
-                    if (movieColumnIndexes.get(i).innerNode.top() == null) {
+                    if (movieColumnIndexes.get(i).getInnerNode().top() == null) {
                         movieList.getObject(movieColumn).setInnerNode(inner);
                     }
                     else {
-                        movieColumnIndexes.get(i).innerNode.top().setBottom(
+                        movieColumnIndexes.get(i).getInnerNode().top().setBottom(
                             inner);
-                        inner.setTop(movieColumnIndexes.get(i).innerNode.top());
+                        inner.setTop(movieColumnIndexes.get(i).getInnerNode().top());
                     }
-                    movieColumnIndexes.get(i).innerNode.setTop(inner);
-                    inner.setBottom(movieColumnIndexes.get(i).innerNode);
+                    movieColumnIndexes.get(i).getInnerNode().setTop(inner);
+                    inner.setBottom(movieColumnIndexes.get(i).getInnerNode());
                     addedToColumn = true;
                     break;
                 }
             }
             // case where new element is last in column
             if (!addedToColumn) {
-                movieColumnIndexes.get(movieColumnIndexes.size() - 1).innerNode
+                movieColumnIndexes.get(movieColumnIndexes.size() - 1).getInnerNode()
                     .setBottom(inner);
                 inner.setTop(movieColumnIndexes.get(movieColumnIndexes.size()
-                    - 1).innerNode);
+                    - 1).getInnerNode());
             }
         }
 
